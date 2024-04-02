@@ -70,7 +70,9 @@ namespace school.repository
                     year = time.year,
                     month = time.month,
                     doctorname = doctor.Name,
-                    AppointmentTime = item.appointmentTime
+                    AppointmentTime = item.appointmentTime,
+                    fee=doctor.fee,
+                    unviersity=doctor.universiry
                 };
                 UserAppointments.Add(UserAppointment);
             }
@@ -104,14 +106,14 @@ namespace school.repository
 
         
 
-        public bool UpdateAppointment(string year, string day, string month, int AppointmentId, string appointmentime)
+        public bool UpdateAppointment( int timeid,int AppointmentId, string appointmentime)
         {
             Appointments oldAppointment = _context.appointments.Where(b => b.Id == AppointmentId).FirstOrDefault();
             UserTimes oldUserApp = _context.userTimes.Where(b => b.Timekey == oldAppointment.timeid && b.userKey == oldAppointment.userid&&b.Time==oldAppointment.appointmentTime).FirstOrDefault();
             DoctorTimes oldDoctorApp = _context.doctorTimes.Where(b => b.TimeId == oldAppointment.timeid && b.DoctorId == oldAppointment.doctorid && b.datetime == oldAppointment.appointmentTime).FirstOrDefault();
-            Times Newtime = _context.times.Where(b => b.year == year && b.day == day && b.month == month).FirstOrDefault();
-            DoctorTimes NewDoctorApp = _context.doctorTimes.Where(b => b.TimeId == Newtime.Id && b.DoctorId == oldAppointment.doctorid&&b.datetime==appointmentime).FirstOrDefault();
-            UserTimes newUserApp = _context.userTimes.Where(u=>u.Id==oldAppointment.userid&&u.Timekey==Newtime.Id&&u.Time==appointmentime).FirstOrDefault();
+           
+            DoctorTimes NewDoctorApp = _context.doctorTimes.Where(b => b.TimeId == timeid && b.DoctorId == oldAppointment.doctorid&&b.datetime==appointmentime).FirstOrDefault();
+            UserTimes newUserApp = _context.userTimes.Where(u=>u.Id==oldAppointment.userid&&u.Timekey== timeid && u.Time==appointmentime).FirstOrDefault();
             if (NewDoctorApp.empty)
             {
                 if(newUserApp!=null)
@@ -120,9 +122,9 @@ namespace school.repository
                 }
                 else
                 {
-                    oldUserApp.Timekey = Newtime.Id;
+                    oldUserApp.Timekey =timeid;
                     oldUserApp.Time = appointmentime;
-                    oldAppointment.timeid = Newtime.Id;
+                    oldAppointment.timeid = timeid;
                     oldAppointment.appointmentTime = appointmentime;
                     oldDoctorApp.empty = true;
                     NewDoctorApp.empty = false;

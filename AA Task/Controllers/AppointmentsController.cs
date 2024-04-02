@@ -73,9 +73,9 @@ namespace school.Controllers
             
         }
         [HttpPut]
-        public IActionResult updateAppointment([FromQuery] string year, string day, string month, int AppointmentId, string appointmentime)
+        public IActionResult updateAppointment([FromQuery] int timeid , int AppointmentId, string appointmentime)
         {
-            bool checker=_repo.UpdateAppointment(year, day, month, AppointmentId, appointmentime);
+            bool checker=_repo.UpdateAppointment(timeid,AppointmentId, appointmentime);
             if (checker)
             {
                 return Ok(checker);

@@ -14,5 +14,7 @@
         public string doctorname   { get; set; }
         public string doctoNum { get; set; }
         public string  doctorspec { get; set; }
+        public int fee { get; set; }
+        public string unviersity { get; set; }
     }
 }
