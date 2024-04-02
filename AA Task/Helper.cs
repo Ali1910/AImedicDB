@@ -11,7 +11,7 @@ namespace AA_Task
             CreateMap<Doctor, DoctorDTO>();
             CreateMap<DoctorDTO, Doctor>();
             CreateMap<Specialty, SpecialtyDTO>();
-            CreateMap<SpecialtyDTO, Doctor>();
+            CreateMap<SpecialtyDTO, Specialty>();
             CreateMap<User, UserDTO>();
             CreateMap<UserDTO, User>();
             CreateMap<Question, QuestionDTO>();

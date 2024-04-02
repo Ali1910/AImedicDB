@@ -12,7 +12,8 @@ namespace AA_Task.DTO
         public string phoneNumber { get; set; }
         public string BirthDate { get; set; }
         public string? SpecialCondition { get; set; }
-       
+        public string gender { get; set; }
+
         public string City { get; set; }
         
         public IFormFile? image { get; set; }

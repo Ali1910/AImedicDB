@@ -14,7 +14,7 @@ namespace AA_Task.DTO
         public int doctorspecialtyId { get; set; }
         public string City { get; set; }
         public string universiry { get; set; }
-        public string ProfilePic { get; set; }
+        public string? ProfilePic { get; set; }
         public int fee { get; set; }
 
       

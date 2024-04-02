@@ -44,6 +44,7 @@ namespace AA_Task.Controllers
                         phoneNumber = usermapper.phoneNumber,
                         Password = usermapper.Password,
                         BirthDate = usermapper.BirthDate,
+                        gender=usermapper.gender,
 
                     };
                     var checker = _repo.AddUser(user);
