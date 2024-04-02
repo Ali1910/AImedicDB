@@ -1,7 +1,5 @@
 ﻿using AA_Task.DTO;
-using AA_Task.Models;
 using AutoMapper;
-
 using Microsoft.AspNetCore.Mvc;
 
 
