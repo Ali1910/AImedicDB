@@ -85,16 +85,62 @@ namespace school.repository
 
         public List<DoctorTimes> getDoctorTimesforDate(int doctorId, string year, string month, string day)
         {
-            int DateId = _context.times.Where(b => b.year == year && b.day == day && b.month == month).FirstOrDefault().Id;
+            int DateId = _context.times.Where(b => b.year == year && b.day == day && b.month == month).FirstOrDefault()!.Id;
             List<DoctorTimes> getdate = _context.doctorTimes.Where(b => b.DoctorId == doctorId && b.TimeId == DateId).ToList() ?? [];
+            if (DateTime.Now.Month >= int.Parse(month))
+            {
+                
+                
+                if (DateTime.Now.Day > int.Parse(day))
+                {
+                    foreach (DoctorTimes dt in getdate)
+                    {
+                        dt.empty = false;
+                    }
+
+                }
+                if(DateTime.Now.Day == int.Parse(day))
+                {
+                    foreach (DoctorTimes dt in getdate)
+                    {
+                       
+
+                        if (int.Parse(dt.datetime.Substring(0, 2)) <= DateTime.Now.Hour)
+                        {
+                            string x= DateTime.Now.Minute.ToString();
+                            if (x.Length == 1)
+                            {
+                                x = $"0{x}";
+                            }
+                            if(int.Parse(dt.datetime.Substring(0, 1)) <= int.Parse(x))
+                            {
+                                dt.empty = false;
+                            }
+
+                        }
+                    }
+
+                }
+
+            }
+            else
+            {
+                foreach (var item in getdate)
+                {
+                    item.empty = false;
+
+                }
+            }
+            _context.SaveChanges();
+          
             return getdate;
         }
 
         public bool deleteAppointment(int AppointmentId)
         {
-            Appointments appointmnet = _context.appointments.Find(AppointmentId);
-            DoctorTimes doctorTime=_context.doctorTimes.Where(DT=> DT.DoctorId == appointmnet.doctorid && DT.TimeId==appointmnet.timeid && DT.datetime == appointmnet.appointmentTime).FirstOrDefault();
-            UserTimes userTime= _context.userTimes.Where(DT => DT.userKey == appointmnet.userid && DT.Timekey == appointmnet.timeid && DT.Time == appointmnet.appointmentTime).FirstOrDefault();
+            Appointments appointmnet = _context.appointments.Find(AppointmentId)!;
+            DoctorTimes doctorTime=_context.doctorTimes.Where(DT=> DT.DoctorId == appointmnet.doctorid && DT.TimeId==appointmnet.timeid && DT.datetime == appointmnet.appointmentTime).FirstOrDefault()!;
+            UserTimes userTime= _context.userTimes.Where(DT => DT.userKey == appointmnet.userid && DT.Timekey == appointmnet.timeid && DT.Time == appointmnet.appointmentTime).FirstOrDefault()!;
             appointmnet.Canceled = true;
             doctorTime.empty = true;
             _context.userTimes.Remove(userTime);
@@ -108,12 +154,12 @@ namespace school.repository
 
         public bool UpdateAppointment( int timeid,int AppointmentId, string appointmentime)
         {
-            Appointments oldAppointment = _context.appointments.Where(b => b.Id == AppointmentId).FirstOrDefault();
-            UserTimes oldUserApp = _context.userTimes.Where(b => b.Timekey == oldAppointment.timeid && b.userKey == oldAppointment.userid&&b.Time==oldAppointment.appointmentTime).FirstOrDefault();
-            DoctorTimes oldDoctorApp = _context.doctorTimes.Where(b => b.TimeId == oldAppointment.timeid && b.DoctorId == oldAppointment.doctorid && b.datetime == oldAppointment.appointmentTime).FirstOrDefault();
-            DoctorTimes NewDoctorApp = _context.doctorTimes.Where(b => b.TimeId == timeid && b.DoctorId == oldAppointment.doctorid&&b.datetime==appointmentime).FirstOrDefault();
-            UserTimes newUserApp = _context.userTimes.Where(u=>u.Id==oldAppointment.userid&&u.Timekey== timeid && u.Time==appointmentime).FirstOrDefault();
-            if (NewDoctorApp.empty)
+            Appointments oldAppointment = _context.appointments.Where(b => b.Id == AppointmentId).FirstOrDefault()!;
+            UserTimes oldUserApp = _context.userTimes.Where(b => b.Timekey == oldAppointment.timeid && b.userKey == oldAppointment.userid&&b.Time==oldAppointment.appointmentTime).FirstOrDefault()!;
+            DoctorTimes oldDoctorApp = _context.doctorTimes.Where(b => b.TimeId == oldAppointment.timeid && b.DoctorId == oldAppointment.doctorid && b.datetime == oldAppointment.appointmentTime).FirstOrDefault()!;
+            DoctorTimes NewDoctorApp = _context.doctorTimes.Where(b => b.TimeId == timeid && b.DoctorId == oldAppointment.doctorid&&b.datetime==appointmentime).FirstOrDefault()!;
+            UserTimes newUserApp = _context.userTimes.Where(u=>u.Id==oldAppointment.userid&&u.Timekey== timeid && u.Time==appointmentime).FirstOrDefault()!;
+            if (NewDoctorApp!.empty)
             {
                 if(newUserApp!=null)
                 {
