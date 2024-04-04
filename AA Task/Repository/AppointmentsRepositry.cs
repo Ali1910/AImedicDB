@@ -89,14 +89,19 @@ namespace school.repository
             List<DoctorTimes> getdate = _context.doctorTimes.Where(b => b.DoctorId == doctorId && b.TimeId == DateId).ToList() ?? [];
             if (DateTime.Now.Month >= int.Parse(month))
             {
-                
-                
-                if (DateTime.Now.Day >= int.Parse(day))
+                 
+                if (DateTime.Now.Day > int.Parse(day))
                 {
                     foreach (DoctorTimes dt in getdate)
                     {
+                        dt.empty = false;
+                    }
 
-
+                }
+                if (DateTime.Now.Day == int.Parse(day))
+                {
+                    foreach (var dt in getdate)
+                    {
                         if (int.Parse(dt.datetime.Substring(0, 2)) <= DateTime.Now.Hour)
                         {
                             string x = DateTime.Now.Minute.ToString();
@@ -110,8 +115,9 @@ namespace school.repository
                             }
 
                         }
-                    }
 
+                    }
+                   
                 }
                
 
@@ -135,7 +141,7 @@ namespace school.repository
             DoctorTimes doctorTime = _context.doctorTimes.Where(DT => DT.DoctorId == appointmnet.doctorid && DT.TimeId == appointmnet.timeid && DT.datetime == appointmnet.appointmentTime).FirstOrDefault()!;
             UserTimes userTime = _context.userTimes.Where(DT => DT.userKey == appointmnet.userid && DT.Timekey == appointmnet.timeid && DT.Time == appointmnet.appointmentTime).FirstOrDefault()!;
             Times time = _context.times.Find(appointmnet.timeid)!;
-            if (DateTime.Now.Month == int.Parse(time.month) && int.Parse(time.day) - DateTime.Now.Day == 0)
+            if (DateTime.Now.Month == int.Parse(time.month) && int.Parse(time.day) - DateTime.Now.Day <= 0)
             {
                 string hour = appointmnet.appointmentTime.Substring(0, 2);
                 if (int.Parse(hour) - DateTime.Now.Hour <= 1)
