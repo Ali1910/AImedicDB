@@ -62,13 +62,14 @@ namespace school.Controllers
         [HttpDelete]
         public IActionResult deleteAppointment([FromQuery] int AppontmentId) 
         {
-            if (_repo.deleteAppointment(AppontmentId))
+            bool checker = _repo.deleteAppointment(AppontmentId);
+            if (checker)
             {
-                return Ok();
+                return Ok(checker);
             }
             else
             {
-                return BadRequest();
+                return Ok(checker);
             }
             
         }
@@ -82,7 +83,7 @@ namespace school.Controllers
             }
             else
             {
-                return BadRequest(checker);
+                return Ok(checker);
 
             }
             
