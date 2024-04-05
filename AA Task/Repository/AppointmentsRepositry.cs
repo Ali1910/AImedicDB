@@ -19,41 +19,62 @@ namespace school.repository
         public bool addAppointment(string appointmentime, int timeid, int UserId, int doctorId)
         {
             
-            UserTimes userChecker = _context.userTimes.Where(b => b.Timekey == timeid && b.userKey == UserId&& b.Time==appointmentime).FirstOrDefault();
-            DoctorTimes DoctorChecker = _context.doctorTimes.Where(b => b.TimeId == timeid && b.DoctorId == doctorId&&b.datetime==appointmentime).FirstOrDefault();
-            Times time = _context.times.Find(timeid);
-            if (int.Parse(time.month) >= DateTime.Now.Month && int.Parse(time.day) > DateTime.Now.Day)
+            UserTimes userChecker = _context.userTimes.Where(b => b.Timekey == timeid && b.userKey == UserId&& b.Time==appointmentime).FirstOrDefault()!;
+            DoctorTimes DoctorChecker = _context.doctorTimes.Where(b => b.TimeId == timeid && b.DoctorId == doctorId&&b.datetime==appointmentime).FirstOrDefault()!;
+            Times time = _context.times.Find(timeid)!;
+            
+            if (int.Parse(time.month) > DateTime.Now.Month) // next month no need to check day
             {
                 return addingAppoinment(appointmentime, timeid, UserId, doctorId, userChecker, DoctorChecker);
             }
-            else
+            else if(int.Parse(time.month) == DateTime.Now.Month) // same month check day
             {
-                string hour = appointmentime.Substring(0, 2);
-                if (int.Parse(hour) - DateTime.Now.Hour > 0) // the is hour diff
+                if (int.Parse(time.day) > DateTime.Now.Day) // next day no need to check hour
                 {
                     return addingAppoinment(appointmentime, timeid, UserId, doctorId, userChecker, DoctorChecker);
+
                 }
-                else if (DateTime.Now.Hour - int.Parse(hour) == 0) //same hour 
+                else if (int.Parse(time.day) == DateTime.Now.Day) // same day need to check hour
                 {
-                    string x = DateTime.Now.Minute.ToString();
-                    if (x.Length == 1)
+                    string hour = "";
+                    if (appointmentime.Length == 8)
                     {
-                        x = $"0{x}";
-                    }
-                    if (int.Parse(appointmentime.Substring(3, 2)) <= int.Parse(x))
-                    {
-                        return false;
+                        hour= appointmentime.Substring(0, 2);
                     }
                     else
                     {
-                        return addingAppoinment(appointmentime, timeid, UserId, doctorId, userChecker, DoctorChecker);
+                        hour = appointmentime.Substring(0 ,1);
 
                     }
+
+                    if (int.Parse(hour) - DateTime.Now.Hour > 0) // next hour no need to check minutes
+                    {
+                        return addingAppoinment(appointmentime, timeid, UserId, doctorId, userChecker, DoctorChecker);
+                    }
+                    else if (DateTime.Now.Hour - int.Parse(hour) == 0) //same hour need to check minutes
+                    {
+                        string x = DateTime.Now.Minute.ToString();
+                        if (x.Length == 1)
+                        {
+                            x = $"0{x}";
+                        }
+                        if (int.Parse(appointmentime.Substring(3, 2)) <= int.Parse(x)) // passed or same minutes can't book
+                        {
+                            return false;
+                        }
+
+                        return addingAppoinment(appointmentime, timeid, UserId, doctorId, userChecker, DoctorChecker);// still minutes left
+
+                    }
+                    return false;//passed hour
+                
                 }
-                else // hour diff not larger than zero or equal to it 
-                {
-                    return false;
-                }
+                return false;// passed day
+
+            }
+            else
+            {
+                return false;//passed month
             }
             
         }
@@ -141,12 +162,22 @@ namespace school.repository
                 {
                     foreach (var dt in getdate)
                     {
-                        if (int.Parse(dt.datetime.Substring(0, 2)) < DateTime.Now.Hour) //checking hour no need to check minutes 
+                        string hour = "";
+                        if (dt.datetime.Length == 8)
+                        {
+                            hour = dt.datetime.Substring(0, 2);
+                        }
+                        else
+                        {
+                            hour = dt.datetime.Substring(0, 1);
+
+                        }
+                        if (int.Parse(hour) < DateTime.Now.Hour) //checking hour no need to check minutes 
                         {
                             dt.empty = false;
                             
 
-                        }else if(int.Parse(dt.datetime.Substring(0, 2)) == DateTime.Now.Hour) // checking hour and need to check minute
+                        }else if(int.Parse(hour) == DateTime.Now.Hour) // checking hour and need to check minute
                         {
                             string x = DateTime.Now.Minute.ToString();
                             if (x.Length == 1)
@@ -195,7 +226,17 @@ namespace school.repository
                     return false;
                 }else if (int.Parse(time.day) - DateTime.Now.Day == 0)// same day needs to check hour
                 {
-                    string hour = appointmnet.appointmentTime.Substring(0, 2);
+                    string hour = "";
+                    if (appointmnet.appointmentTime.Length == 8)
+                    {
+                        hour = appointmnet.appointmentTime.Substring(0, 2);
+                    }
+                    else
+                    {
+                        hour = appointmnet.appointmentTime.Substring(0, 1);
+
+                    }
+                    
                     if (int.Parse(hour) - DateTime.Now.Hour <= 1)// hour diff is one or less
                     {
                         return false;
@@ -233,11 +274,6 @@ namespace school.repository
             
             
         }
-
-
-
-        
-
         public bool UpdateAppointment( int timeid,int AppointmentId, string appointmentime)
         {
             Appointments oldAppointment = _context.appointments.Where(b => b.Id == AppointmentId).FirstOrDefault()!;
@@ -246,38 +282,58 @@ namespace school.repository
             DoctorTimes NewDoctorApp = _context.doctorTimes.Where(b => b.TimeId == timeid && b.DoctorId == oldAppointment.doctorid && b.datetime == appointmentime).FirstOrDefault()!;
             UserTimes newUserApp = _context.userTimes.Where(u => u.Id == oldAppointment.userid && u.Timekey == timeid && u.Time == appointmentime).FirstOrDefault()!;
             Times time = _context.times.Find(timeid);
-            if (int.Parse(time.month) >= DateTime.Now.Month && int.Parse(time.day) > DateTime.Now.Day)
+
+            if (int.Parse(time.month) > DateTime.Now.Month) // next month no need to check day
             {
                 return updateAppointment(timeid, appointmentime, oldAppointment, oldUserApp, oldDoctorApp, NewDoctorApp, newUserApp);
             }
-            else
+            else if (int.Parse(time.month) == DateTime.Now.Month) // same month check day
             {
-                string hour = appointmentime.Substring(0, 2);
-                if (int.Parse(hour) - DateTime.Now.Hour > 0) // the is hour diff
+                if (int.Parse(time.day) > DateTime.Now.Day) // next day no need to check hour
                 {
                     return updateAppointment(timeid, appointmentime, oldAppointment, oldUserApp, oldDoctorApp, NewDoctorApp, newUserApp);
                 }
-                else if (DateTime.Now.Hour - int.Parse(hour) == 0) //same hour 
+                else if (int.Parse(time.day) == DateTime.Now.Day) // same day need to check hour
                 {
-                    string x = DateTime.Now.Minute.ToString();
-                    if (x.Length == 1)
+                    string hour = "";
+                    if (appointmentime.Length == 8)
                     {
-                        x = $"0{x}";
-                    }
-                    if (int.Parse(appointmentime.Substring(3, 2)) <= int.Parse(x))
-                    {
-                        return false;
+                        hour = appointmentime.Substring(0, 2);
                     }
                     else
                     {
-                        return updateAppointment(timeid,appointmentime,oldAppointment,oldUserApp,oldDoctorApp,NewDoctorApp,newUserApp);
+                        hour = appointmentime.Substring(0, 1);
 
                     }
+
+                    if (int.Parse(hour) - DateTime.Now.Hour > 0) // next hour no need to check minutes
+                    {
+                        return updateAppointment(timeid, appointmentime, oldAppointment, oldUserApp, oldDoctorApp, NewDoctorApp, newUserApp);
+                    }
+                    else if (DateTime.Now.Hour - int.Parse(hour) == 0) //same hour need to check minutes
+                    {
+                        string x = DateTime.Now.Minute.ToString();
+                        if (x.Length == 1)
+                        {
+                            x = $"0{x}";
+                        }
+                        if (int.Parse(appointmentime.Substring(3, 2)) <= int.Parse(x)) // passed or same minutes can't book
+                        {
+                            return false;
+                        }
+
+                        return updateAppointment(timeid, appointmentime, oldAppointment, oldUserApp, oldDoctorApp, NewDoctorApp, newUserApp);// still minutes left
+
+                    }
+                    return false;//passed hour
+
                 }
-                else // hour diff not larger than zero or equal to it 
-                {
-                    return false;
-                }
+                return false;// passed day
+
+            }
+            else
+            {
+                return false;//passed month
             }
 
 
