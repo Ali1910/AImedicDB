@@ -50,7 +50,7 @@ namespace AA_Task.Controllers
                     var checker = _repo.AddUser(user);
                     if (checker)
                     {
-                        return Ok(usermapper);
+                        return Ok(user);
 
                     }
                     else
