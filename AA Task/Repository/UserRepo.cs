@@ -36,5 +36,37 @@ namespace AA_Task.Repository
             var user = _context.users.Where(u => u.Email == email && u.Password == password).Select(u => new  { u.Id }).FirstOrDefault();
             return user is null?0:user.Id;
         }
+
+        public string updateCity(int id, string newcity)
+        {
+            User user = _context.users.Find(id)!;
+            user.City = newcity;
+            return _context.SaveChanges()>0?"تم تعديل المدينة بنجاح":"حدث خطأ اثناءالتعديل حاول مرة اخرى";
+        }
+
+        public string updatepassword(int id, string oldpassword, string newpassword)
+        {
+            User user = _context.users.Find(id)!;
+            if (user.Password!=oldpassword)
+            {
+                return "برجاء إدخال كلمة مرور القديمة بشكل صحيح";
+            }
+            else
+            {
+                if(oldpassword==newpassword) 
+                {
+                    return "برجاء إدخال كلمة سر مختلفة عن كلمة السر القديمة";
+                }
+                user.Password = newpassword;
+                return _context.SaveChanges()>0?"تم تعديل كلمة المرور بنجاح":"حاول مرة اخرى";
+            }
+        }
+
+        public string updatePhoneNumber(int id, string newPhoneNumbder)
+        {
+            User user = _context.users.Find(id)!;
+            user.phoneNumber = newPhoneNumbder;
+            return _context.SaveChanges() > 0 ? "تم تعديل رقم الهاتف  بنجاح" : "حدث خطأ اثناءالتعديل حاول مرة اخرى";
+        }
     }
 }

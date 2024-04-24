@@ -8,5 +8,8 @@ namespace AA_Task.Interface
         bool AddUser(User user);
         int login(string email , string password);
         User GetProfileDetials(int id);
+        string updatepassword(int id , string oldpassword,string newpassword);
+        string updateCity(int id,  string newcity);
+        string updatePhoneNumber(int id, string newPhoneNumbder);
     }
 }

@@ -18,12 +18,12 @@ namespace AA_Task.Controllers
         private readonly iFileService _service;
         private readonly IMapper _mapper;
         public UserController(IUserRepo repo
-            , IMapper mapper,iFileService service)
+            , IMapper mapper, iFileService service)
         {
             _mapper = mapper;
             _repo = repo;
             _service = service;
-            
+
         }
         [HttpPost]
         public IActionResult SignUp([FromForm] UserDTO usermapper)
@@ -44,7 +44,7 @@ namespace AA_Task.Controllers
                         phoneNumber = usermapper.phoneNumber,
                         Password = usermapper.Password,
                         BirthDate = usermapper.BirthDate,
-                        gender=usermapper.gender,
+                        gender = usermapper.gender,
 
                     };
                     var checker = _repo.AddUser(user);
@@ -62,21 +62,21 @@ namespace AA_Task.Controllers
                 {
                     return BadRequest($"image Not saved");
                 }
-                
 
-                
-                }else
-                {
-                    return BadRequest($"image Not Added");
 
-                }
-            
+
+            } else
+            {
+                return BadRequest($"image Not Added");
+
+            }
+
         }
         [HttpGet]
-        public IActionResult login([FromQuery]string email,string password) 
+        public IActionResult login([FromQuery] string email, string password)
         {
-            var user=_repo.login(email,password);
-            if(user == 0)
+            var user = _repo.login(email, password);
+            if (user == 0)
             {
                 return Ok("Wrong email or passwrod try agin and make sure you entered the right password");
             }
@@ -84,27 +84,74 @@ namespace AA_Task.Controllers
             {
                 return Ok(user);
             }
-            
+
         }
         [HttpGet("GetPofileDetailes")]
         public IActionResult profile([FromQuery] int id)
         {
-            var user =  _repo.GetProfileDetials(id);
+            var user = _repo.GetProfileDetials(id);
             if (user == null)
             {
                 return Ok("Wrong Id");
             }
             else
             {
-                var profiledata = new
-                {
-                    pic = user.ProfilePic,
-                    name = user.Name,
-                    email = user.Email
-                };
-                return Ok(profiledata);
+                
+                return Ok(user);
             }
 
         }
+        [HttpPut("updatePassword")]
+        public IActionResult UpdatePassword([FromQuery] int id, string oldpassword, string newpassword)
+        {
+            try
+            {
+                string result = _repo.updatepassword(id, oldpassword, newpassword);
+                if (result == "برجاء إدخال كلمة مرور القديمة بشكل صحيح")
+                {
+                    return Ok(result);
+                }
+                else
+                {
+                    return Ok(result);
+                }
+
+            } catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpPut("updateCity")]
+        public IActionResult Updatecity ([FromQuery] int id,  string newcity)
+        {
+            try
+            {
+                string result = _repo.updateCity(id, newcity);
+               
+                    return Ok(result);
+                
+                
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpPut("updatePhoneNumber")]
+        public IActionResult UpdatePhoneNumber([FromQuery] int id, string newPhoneNumber)
+        {
+            try
+            {
+                string result = _repo.updatePhoneNumber(id, newPhoneNumber);
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
     }
 }
