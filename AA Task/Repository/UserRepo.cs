@@ -65,8 +65,13 @@ namespace AA_Task.Repository
         public string updatePhoneNumber(int id, string newPhoneNumbder)
         {
             User user = _context.users.Find(id)!;
+            
+            if(newPhoneNumbder==user.phoneNumber)
+            {
+                return "لقد قمت بأدخال نفس رقم الهاتف السابق";
+            }
             user.phoneNumber = newPhoneNumbder;
-            return _context.SaveChanges() > 0 ? "تم تعديل رقم الهاتف  بنجاح" : "حدث خطأ اثناءالتعديل حاول مرة اخرى";
+            return _context.SaveChanges() > 0 ? "تم تعديل رقم الهاتف بنجاح" : "حدث خطأ اثناءالتعديل حاول مرة اخرى";
         }
     }
 }

@@ -89,7 +89,7 @@ namespace AA_Task.Controllers
         [HttpGet("GetPofileDetailes")]
         public IActionResult profile([FromQuery] int id)
         {
-            var user = _repo.GetProfileDetials(id);
+            var user = _repo.GetProfileDetials (id);
             if (user == null)
             {
                 return Ok("Wrong Id");

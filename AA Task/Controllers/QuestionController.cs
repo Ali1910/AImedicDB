@@ -34,9 +34,9 @@ namespace AA_Task.Controllers
         }
         [HttpGet]
         public IActionResult GetAllGuestions([FromQuery] int pagesize,int pageNum) {
-           var listOfQuestions= _questionRepo.getAllquestions(pagesize,pageNum);
-            if (listOfQuestions.Count!=0) {
-                return Ok(listOfQuestions);
+           var Questions= _questionRepo.getAllquestions(pagesize,pageNum);
+            if (Questions.Count!=0) {
+                return Ok(Questions);
             }
             else
             {

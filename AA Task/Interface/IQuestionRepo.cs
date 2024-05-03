@@ -6,7 +6,7 @@ namespace AA_Task.Interface
     public interface IQuestionRepo
     {
         bool addquestion(Question question);
-        List<Question> getAllquestions(int pagesize,int pagenum);
-        List<Question> getMyQuestions(int userID, int pagesize, int pagenum);
+        Dictionary<string, dynamic> getAllquestions(int pagesize,int pagenum);
+        Dictionary<string, dynamic> getMyQuestions(int userID, int pagesize, int pagenum);
     }
 }
