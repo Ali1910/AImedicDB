@@ -20,6 +20,7 @@ builder.Services.AddDbContext<TaskDataContext>(options => options.UseSqlServer(b
 builder.Services.AddScoped<IspecialtyRepo, SpecialtyRepo>();
 builder.Services.AddTransient<iFileService, FileService>();
 builder.Services.AddScoped<IDoctorRepo, DoctorRepo>();
+builder.Services.AddScoped<IAnswerRepo, AnswerRepo>();
 builder.Services.AddScoped<IUserRepo, UserRepo>();
 builder.Services.AddScoped<IQuestionRepo, QuestionRepo>();
 builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();

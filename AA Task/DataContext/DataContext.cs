@@ -18,6 +18,7 @@ namespace AA_Task.DataContext
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Question>().Property(p=>p.Answered).HasDefaultValue(false);
             modelBuilder.Entity<Question>().HasOne<User>().WithMany().HasForeignKey(q => q.User);
             modelBuilder.Entity<answer>().HasOne<Doctor>().WithMany().HasForeignKey(a => a.doctor);
             modelBuilder.Entity<answer>().HasOne<Question>().WithMany().HasForeignKey(a => a.question);

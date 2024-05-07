@@ -15,8 +15,18 @@ namespace AA_Task.Repository
 
         public bool AddDoctor(Doctor doctor)
         {
-            _Context.doctors.Add(doctor);
-            return _Context.SaveChanges()>0?true:false;
+           Doctor checker= _Context.doctors.Where(d => d.Email == doctor.Email).FirstOrDefault();
+            if (checker != null)
+            {
+                return false;
+            }
+            else
+            {
+                _Context.doctors.Add(doctor);
+                return _Context.SaveChanges() > 0 ? true : false;
+            }
+
+           
         }
 
         public List<Doctor> GetDoctorsByName(string name)
@@ -31,6 +41,13 @@ namespace AA_Task.Repository
             var specialtyId=_Context.specialties.Where(s=>s.Name==specialty).FirstOrDefault().Id;
             var ListOfDoctor = _Context.doctors.Where(d => d.doctorspecialtyId == specialtyId).ToList();
             return ListOfDoctor;
+        }
+
+        public int login(string email, string password)
+        {
+            Doctor doctor=_Context.doctors.Where(d=>d.Email==email&&d.Password==password).FirstOrDefault();
+
+            return doctor is null ? 0 : doctor.Id;
         }
     }
 }

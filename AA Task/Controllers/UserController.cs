@@ -78,7 +78,7 @@ namespace AA_Task.Controllers
             var user = _repo.login(email, password);
             if (user == 0)
             {
-                return Ok("Wrong email or passwrod try agin and make sure you entered the right password");
+                return Ok("Wrong email or passwrod try again");
             }
             else
             {

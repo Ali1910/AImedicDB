@@ -44,7 +44,7 @@ namespace AA_Task.Controllers
                 }
                 else
                 {
-                    return BadRequest($"{doctor.Name} is Not successfully");
+                    return BadRequest($"{doctor.Name} is Not successfully email already exists");
                 }
 
             }
@@ -79,6 +79,20 @@ namespace AA_Task.Controllers
             {
                 return BadRequest("No doctors in that Specialty");
             }
+        }
+        [HttpGet("Log IN")]
+        public IActionResult LogIn([FromQuery] string email,string password)
+        {
+            int doctorId=_repo.login(email, password);
+            if (doctorId == 0)
+            {
+                return Ok("wrong email or password try again");
+            }
+            else
+            {
+                return Ok(doctorId);
+            }
+
         }
     }
 }
