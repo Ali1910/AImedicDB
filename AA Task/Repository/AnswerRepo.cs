@@ -53,7 +53,7 @@ namespace AA_Task.Repository
                 Specialty specialty = _context.specialties.Find(doctor.doctorspecialtyId)!;
                 Dictionary<string, dynamic> response = new Dictionary<string, dynamic>();
                 response.Add("answer", answer);
-                response.Add("doctor", doctor);
+                response.Add("doctorData", doctor);
                 response.Add("specialty", specialty);
                 return response;
 
