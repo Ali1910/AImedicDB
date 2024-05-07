@@ -43,5 +43,27 @@ namespace AA_Task.Repository
                 }
             }
         }
+
+        public Dictionary<string, dynamic> GetAnswerForQuestion(int questionId)
+        {
+            answer answer=_context.answers.Where(a=>a.question==questionId).FirstOrDefault();
+            if (answer is not null)
+            {
+                Doctor doctor = _context.doctors.Find(answer.doctor)!;
+                Specialty specialty = _context.specialties.Find(doctor.doctorspecialtyId)!;
+                Dictionary<string, dynamic> response = new Dictionary<string, dynamic>();
+                response.Add("answer", answer);
+                response.Add("doctor", doctor);
+                response.Add("specialty", specialty);
+                return response;
+
+            }
+            else
+            {
+                return new Dictionary<string, dynamic>();
+                
+            }
+            
+        }
     }
 }

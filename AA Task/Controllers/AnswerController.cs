@@ -26,6 +26,12 @@ namespace AA_Task.Controllers
             }
 
         }
+        [HttpGet]
+        public IActionResult GetAnswerForQuestion([FromQuery]int questionId) 
+        {
+            Dictionary<string, dynamic> response=_Repo.GetAnswerForQuestion(questionId);
+            return Ok(response);
+        }
         
     }
 }
