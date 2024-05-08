@@ -111,25 +111,25 @@ namespace school.repository
 
         public List<AppointmenstDTO> GetUserAppointments(int userId,bool state)
         {
-            List<Appointments> appointmentsForUser = _context.appointments.OrderByDescending(b => b.Id).Where(a => a.userid == userId&&a.Canceled== state).ToList() ?? [];
+            List<Appointments> appointmentsForUser = _context.appointments.OrderByDescending(b => b.Id).Where(a => a.userid == userId&&a.Canceled== state&&a.Done==false).ToList() ?? [];
             List<AppointmenstDTO> UserAppointments = [];
             foreach (var item in appointmentsForUser)
             {
-                Doctor doctor = _context.doctors.Where(d => d.Id == item.doctorid).FirstOrDefault();
-                Times time = _context.times.Where(d => d.Id == item.timeid).FirstOrDefault();
+                Doctor doctor = _context.doctors.Find( item.doctorid)!;
+                Times time = _context.times.Find(item.timeid)!;
                 AppointmenstDTO UserAppointment = new AppointmenstDTO()
                 {
                     id = item.Id,
                     doctorid = item.doctorid,
                     timeid = item.timeid,
                     userid = userId,
-                    doctorspec = _context.specialties.Where(b => b.Id == doctor.doctorspecialtyId).FirstOrDefault().Name,
-                    doctorpic = doctor.ProfilePic,
-                    doctoNum = doctor.phoneNumber,
+                    spec = _context.specialties.Find( doctor.doctorspecialtyId)!.Name,
+                    pic = doctor.ProfilePic!,
+                    number = doctor.phoneNumber,
                     day = time.day,
                     year = time.year,
                     month = time.month,
-                    doctorname = doctor.Name,
+                    name = doctor.Name,
                     AppointmentTime = item.appointmentTime,
                     fee=doctor.fee,
                     unviersity=doctor.universiry
@@ -274,7 +274,7 @@ namespace school.repository
             
             
         }
-        public bool UpdateAppointment( int timeid,int AppointmentId, string appointmentime)
+        public bool UpdateAppointment(int timeid,int AppointmentId, string appointmentime)
         {
             Appointments oldAppointment = _context.appointments.Where(b => b.Id == AppointmentId).FirstOrDefault()!;
             UserTimes oldUserApp = _context.userTimes.Where(b => b.Timekey == oldAppointment.timeid && b.userKey == oldAppointment.userid && b.Time == oldAppointment.appointmentTime).FirstOrDefault()!;
@@ -361,6 +361,129 @@ namespace school.repository
                 return false;
             }
         }
+
+        public bool EndAppointment(int AppointmentId)
+        {
+            Appointments appointmnet = _context.appointments.Find(AppointmentId)!;
+            DoctorTimes doctorTime = _context.doctorTimes.Where(DT => DT.DoctorId == appointmnet.doctorid && DT.TimeId == appointmnet.timeid && DT.datetime == appointmnet.appointmentTime).FirstOrDefault()!;
+            UserTimes userTime = _context.userTimes.Where(DT => DT.userKey == appointmnet.userid && DT.Timekey == appointmnet.timeid && DT.Time == appointmnet.appointmentTime).FirstOrDefault()!;
+            Times time = _context.times.Find(appointmnet.timeid)!;
+            if (DateTime.Now.Month == int.Parse(time.month)) //same month needs to check day  for ex 5
+            {
+                if (int.Parse(time.day) - DateTime.Now.Day < 0)//old day no need to check hour  **past appointment** for ex day 4-5 يقدر يخليه done
+                {
+                    appointmnet.Done = true;
+                    _context.userTimes.Remove(userTime);
+                    return _context.SaveChanges() > 0 ? true : false;
+                }
+                else if (int.Parse(time.day) - DateTime.Now.Day == 0)// same day needs to check hour for ex day 5 لازم نشوف الساعة
+                {
+                    string hour = "";
+                    if (appointmnet.appointmentTime.Length == 8)
+                    {
+                        hour = appointmnet.appointmentTime.Substring(0, 2);
+                    }
+                    else
+                    {
+                        hour = appointmnet.appointmentTime.Substring(0, 1);
+
+                    }
+
+                    if (int.Parse(hour) - DateTime.Now.Hour <= 1)// hour diff is one or more ***past appointment*** for ex 20-21
+                    {
+                        appointmnet.Done = true;
+                        _context.userTimes.Remove(userTime);
+                        return _context.SaveChanges() > 0 ? true : false;
+                    }
+                    else // hour diff are more than hour **PresentAppointment****  for ex 22-21
+                    {
+                        return false;
+
+                    }
+                }
+                else//coming day for ex today is 5 and the appointment in 7
+                {
+                    return false;
+                }
+
+
+            }
+            else if (DateTime.Now.Month > int.Parse(time.month))//old month
+            {
+                appointmnet.Done = true;
+                _context.userTimes.Remove(userTime);
+                return _context.SaveChanges() > 0 ? true : false;
+            }
+
+            else// comming month
+            {
+                return false;
+            }
+        }
+
+        public List<AppointmenstDTO> GetUserDoneAppointments(int userId)
+        {
+            List<Appointments> appointmentsForUser = _context.appointments.OrderByDescending(b => b.Id).Where(a => a.userid == userId &&  a.Done == true).ToList() ?? [];
+            List<AppointmenstDTO> UserAppointments = [];
+            foreach (var item in appointmentsForUser)
+            {
+                Doctor doctor = _context.doctors.Find(item.doctorid)!;
+                Times time = _context.times.Find(item.timeid)!;
+                AppointmenstDTO UserAppointment = new AppointmenstDTO()
+                {
+                    id = item.Id,
+                    doctorid = item.doctorid,
+                    timeid = item.timeid,
+                    userid = userId,
+                    spec = _context.specialties.Find( doctor.doctorspecialtyId)!.Name,
+                    pic = doctor.ProfilePic!,
+                    number = doctor.phoneNumber,
+                    day = time.day,
+                    year = time.year,
+                    month = time.month,
+                    name = doctor.Name,
+                    AppointmentTime = item.appointmentTime,
+                    fee = doctor.fee,
+                    unviersity = doctor.universiry
+                };
+                UserAppointments.Add(UserAppointment);
+            }
+
+
+            return UserAppointments;
+        }
+    
+
+        public List<AppointmenstDTO> GetDoctorAppointments(int DoctorId, bool state)
+        {
+            List<Appointments> appointmentsForDocto = _context.appointments.OrderByDescending(b => b.Id).Where(a => a.doctorid == DoctorId && a.Done == state).ToList() ?? [];
+            List<AppointmenstDTO> DoctorAppointments = [];
+            foreach (var item in appointmentsForDocto)
+            {
+                User user = _context.users.Find(item.userid)!;
+                Times time = _context.times.Find(item.timeid)!;
+                AppointmenstDTO DoctorAppointment = new AppointmenstDTO()
+                {
+                    id = item.Id,
+                    doctorid = DoctorId,
+                    timeid = item.timeid,
+                    userid = item.userid,
+                    pic = user.ProfilePic!,
+                    number = user.phoneNumber,
+                    day = time.day,
+                    year = time.year,
+                    month = time.month,
+                    name = user.Name,
+                    AppointmentTime = item.appointmentTime,
+                   
+                };
+                DoctorAppointments.Add(DoctorAppointment);
+            }
+
+
+            return DoctorAppointments;
+        }
     }
 }
+
 

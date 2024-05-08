@@ -46,6 +46,34 @@ namespace school.Controllers
                 return BadRequest(ex.ToString());
             }
         }
+        [HttpGet("GetUserDoneAppointments")]
+        public IActionResult getUserDoneAppointmnets([FromQuery] int userId)
+        {
+            try
+            {
+                List<AppointmenstDTO> response = _repo.GetUserDoneAppointments(userId);
+                return Ok(response);
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.ToString());
+            }
+        }
+        [HttpGet("GetDoctorAppointments")]
+        public IActionResult getDoctorAppointmnets([FromQuery] int doctorId,bool state)
+        {
+            try
+            {
+                List<AppointmenstDTO> response = _repo.GetDoctorAppointments(doctorId,state);
+                return Ok(response);
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.ToString());
+            }
+        }
         [HttpPost]
         public IActionResult BookAppointment([FromQuery] string appointmentime, int timeid, int UserId, int doctorId)
         {
@@ -87,6 +115,22 @@ namespace school.Controllers
 
             }
             
+
+        }
+        [HttpPut("endAppointMent")]
+        public IActionResult EndAppointment([FromQuery]  int AppointmentId)
+        {
+            bool checker = _repo.EndAppointment(AppointmentId);
+            if (checker)
+            {
+                return Ok(checker);
+            }
+            else
+            {
+                return Ok(checker);
+
+            }
+
 
         }
     }

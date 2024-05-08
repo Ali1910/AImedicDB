@@ -10,11 +10,11 @@
         public string month { get; set; }   
         public string day { get; set; }
         public string AppointmentTime { get; set; }
-        public string  doctorpic { get; set; }
-        public string doctorname   { get; set; }
-        public string doctoNum { get; set; }
-        public string  doctorspec { get; set; }
-        public int fee { get; set; }
-        public string unviersity { get; set; }
+        public string  pic { get; set; }
+        public string name   { get; set; }
+        public string number { get; set; }
+        public string?  spec { get; set; }
+        public int? fee { get; set; }
+        public string? unviersity { get; set; }
     }
 }

@@ -14,8 +14,11 @@ namespace school
         List<DoctorTimes> getDoctorTimesforDate(int doctorId, string year, string month, string day);
 
         List<AppointmenstDTO> GetUserAppointments(int userId, bool state);
+        List<AppointmenstDTO> GetUserDoneAppointments(int userId);
+        List<AppointmenstDTO> GetDoctorAppointments(int DoctorId, bool state);
         //for delete request
         bool deleteAppointment(int AppointmentId);
+        bool EndAppointment(int AppointmentId);
       
 
     }
