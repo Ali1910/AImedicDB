@@ -19,6 +19,7 @@ namespace AA_Task.DataContext
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Question>().Property(p=>p.Answered).HasDefaultValue(false);
+            modelBuilder.Entity<HealthAdvice>().HasOne<Doctor>().WithMany().HasForeignKey(H => H.doctorId);
             modelBuilder.Entity<Question>().HasOne<User>().WithMany().HasForeignKey(q => q.User);
             modelBuilder.Entity<answer>().HasOne<Doctor>().WithMany().HasForeignKey(a => a.doctor);
             modelBuilder.Entity<answer>().HasOne<Question>().WithMany().HasForeignKey(a => a.question);
@@ -37,9 +38,7 @@ namespace AA_Task.DataContext
             modelBuilder.Entity<Appointments>().HasOne<Doctor>().WithMany().HasForeignKey(b => b.doctorid);
             modelBuilder.Entity<Appointments>().HasOne<Times>().WithMany().HasForeignKey(b => b.timeid);
             modelBuilder.Entity<Doctor>().HasOne<Specialty>().WithMany().HasForeignKey(b => b.doctorspecialtyId);
-
-
-        }
+}
         public DbSet<User> users { get; set; }
         public DbSet<Specialty> specialties { get; set; }
         public DbSet<Doctor> doctors { get; set; }
@@ -52,5 +51,6 @@ namespace AA_Task.DataContext
         public DbSet<UserTimes> userTimes { get; set; }
         public DbSet<DoctorTimes> doctorTimes { get; set; }
         public DbSet<Appointments> appointments { get; set; }
+        public DbSet<HealthAdvice> healthAdvices { get; set; }
     }
 }
