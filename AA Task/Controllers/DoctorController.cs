@@ -94,5 +94,24 @@ namespace AA_Task.Controllers
             }
 
         }
+        [HttpGet]
+        public IActionResult GetDoctorById([FromQuery]int id)
+        {
+            Doctor doctor = _repo.GetDoctorById(id);
+            if(doctor == null)
+            {
+                return BadRequest();
+            }
+            else
+            {
+                return Ok(doctor);
+            }
+        }
+        [HttpGet("patients")]
+        public IActionResult GetPatientsForDoctor([FromQuery]int id)
+        {
+            List<User> users =_repo.getPateintsForDoctor(id);
+            return Ok(users);
+        }
     }
 }
