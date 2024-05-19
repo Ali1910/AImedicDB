@@ -3,6 +3,7 @@ using AA_Task.DataContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AA_Task.Migrations
 {
     [DbContext(typeof(TaskDataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240516101850_altarSymptomsTable")]
+    partial class altarSymptomsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -56,11 +58,7 @@ namespace AA_Task.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
 
-                    b.Property<string>("bodypartInArabic")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("bodypartInEnglis")
+                    b.Property<string>("bodypart")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
