@@ -33,8 +33,20 @@ namespace AA_Task.Repository
 
         public int login(string email , string password)
         {
-            var user = _context.users.Where(u => u.Email == email && u.Password == password).Select(u => new  { u.Id }).FirstOrDefault();
-            return user is null?0:user.Id;
+            User user = _context.users.Where(u=>u.Email==email&&u.Password==password).FirstOrDefault();
+            if(user == null)
+            {
+                return 0;
+            }
+            else
+            {
+                if(email!=user.Email||password!=user.Password)
+                {
+                    return 0;
+                }
+                return user.Id;
+            }
+            
         }
 
         public string updateCity(int id, string newcity)

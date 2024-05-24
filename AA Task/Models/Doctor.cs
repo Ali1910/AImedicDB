@@ -12,7 +12,8 @@ namespace AA_Task.Models
         public string universiry { get; set; }
         public int fee { get; set; }
         public string BirthDate { get; set; }
-
+        public string location { get; set; }
+        public float Rating { get; set; }
         public int doctorspecialtyId { get; set; }
 
         public string? ProfilePic { get; set; }

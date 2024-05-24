@@ -18,6 +18,12 @@ namespace AA_Task.DataContext
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Doctor>().Property(p=>p.Rating).HasDefaultValue(0);
+            modelBuilder.Entity<diagnosis>().HasOne<Doctor>().WithMany().HasForeignKey(r => r.doctorId).OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<diagnosis>().HasOne<User>().WithMany().HasForeignKey(r => r.userid).OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<RatingAndComments>().HasOne<Doctor>().WithMany().HasForeignKey(r => r.doctorId).OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<RatingAndComments>().HasOne<User>().WithMany().HasForeignKey(r => r.UserId).OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<RatingAndComments>().HasOne<Appointments>().WithMany().HasForeignKey(r => r.appointmentId).OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<Question>().Property(p=>p.Answered).HasDefaultValue(false);
             modelBuilder.Entity<Symptom>().HasOne<BodyPart>().WithMany().HasForeignKey(b => b.boypartId);
             modelBuilder.Entity<HealthAdvice>().HasOne<Doctor>().WithMany().HasForeignKey(H => H.doctorId);
@@ -55,5 +61,7 @@ namespace AA_Task.DataContext
         public DbSet<HealthAdvice> healthAdvices { get; set; }
         public DbSet<Symptom> symptoms { get; set; }
         public DbSet<BodyPart> bodyParts { get; set; }
+        public DbSet<RatingAndComments> ratingAndComments { get; set; }
+        public DbSet<diagnosis> diagnosesSummary { get; set; }
     }
 }

@@ -73,18 +73,17 @@ namespace AA_Task.Controllers
 
         }
         [HttpGet]
-        public IActionResult login([FromQuery] string email, string password)
+       public IActionResult Login([FromQuery] string email,string password) 
         {
-            var user = _repo.login(email, password);
-            if (user == 0)
+            int reponse=_repo.login(email, password);
+            if(reponse == 0)
             {
-                return Ok("Wrong email or passwrod try again");
+                return BadRequest("تأكد من صحة البيانات المدخلة");
             }
             else
             {
-                return Ok(user);
+                return Ok(reponse);
             }
-
         }
         [HttpGet("GetPofileDetailes")]
         public IActionResult profile([FromQuery] int id)

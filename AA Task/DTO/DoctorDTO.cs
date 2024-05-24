@@ -16,8 +16,9 @@ namespace AA_Task.DTO
         public string universiry { get; set; }
         public string? ProfilePic { get; set; }
         public int fee { get; set; }
+        public float rating { get; set; }
+        public string location { get; set; }
 
-      
         public IFormFile Image { get; set; }
     }
 }

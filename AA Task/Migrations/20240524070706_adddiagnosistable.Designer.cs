@@ -3,6 +3,7 @@ using AA_Task.DataContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AA_Task.Migrations
 {
     [DbContext(typeof(TaskDataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240524070706_adddiagnosistable")]
+    partial class adddiagnosistable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -93,7 +95,7 @@ namespace AA_Task.Migrations
 
                     b.HasIndex("userid");
 
-                    b.ToTable("diagnosesSummary");
+                    b.ToTable("diagnosis");
                 });
 
             modelBuilder.Entity("AA_Task.Models.Doctor", b =>

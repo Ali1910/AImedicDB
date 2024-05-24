@@ -3,6 +3,7 @@ using AA_Task.DataContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AA_Task.Migrations
 {
     [DbContext(typeof(TaskDataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240524070041_updatedoctortableaddrating")]
+    partial class updatedoctortableaddrating
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -67,33 +69,6 @@ namespace AA_Task.Migrations
                     b.HasKey("id");
 
                     b.ToTable("bodyParts");
-                });
-
-            modelBuilder.Entity("AA_Task.Models.diagnosis", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
-
-                    b.Property<int>("doctorId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("summaryOfTheSession")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("userid")
-                        .HasColumnType("int");
-
-                    b.HasKey("id");
-
-                    b.HasIndex("doctorId");
-
-                    b.HasIndex("userid");
-
-                    b.ToTable("diagnosesSummary");
                 });
 
             modelBuilder.Entity("AA_Task.Models.Doctor", b =>
@@ -542,21 +517,6 @@ namespace AA_Task.Migrations
                         .WithMany()
                         .HasForeignKey("question")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("AA_Task.Models.diagnosis", b =>
-                {
-                    b.HasOne("AA_Task.Models.Doctor", null)
-                        .WithMany()
-                        .HasForeignKey("doctorId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("AA_Task.Models.User", null)
-                        .WithMany()
-                        .HasForeignKey("userid")
-                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 

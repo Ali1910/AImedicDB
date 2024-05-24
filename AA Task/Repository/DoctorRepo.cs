@@ -3,6 +3,7 @@ using AA_Task.Interface;
 using AA_Task.Models;
 using BookingPage.Models;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Xml.Linq;
 
 namespace AA_Task.Repository
@@ -34,6 +35,18 @@ namespace AA_Task.Repository
         public Doctor GetDoctorById(int id)
         {
             Doctor doctor = _Context.doctors.Find(id)!;
+            List<RatingAndComments> ratings=_Context.ratingAndComments.Where(d => d.doctorId == id).ToList();
+            float ratingSum = 0;
+            foreach (RatingAndComments rating in ratings)
+            {
+                ratingSum = ratingSum + rating.rating;
+                
+            }
+            if (ratings.Count == 0)
+            {
+                doctor.Rating = ratingSum / 1;
+            }else
+            doctor.Rating= ratingSum/ratings.Count;
             if(doctor != null)
             {
                 return doctor;
@@ -46,7 +59,24 @@ namespace AA_Task.Repository
 
         public List<Doctor> GetDoctorsByName(string name)
         {
-           var ListOfDoctor=_Context.doctors.Where(d=>d.Name==name).ToList();
+           var ListOfDoctor=_Context.doctors.Where(d=>d.Name.Contains(name)).ToList();
+            foreach (var item in ListOfDoctor)
+            {
+                List<RatingAndComments> ratings = _Context.ratingAndComments.Where(d => d.doctorId == item.Id).ToList();
+                float ratingSum = 0;
+                foreach (RatingAndComments rating in ratings)
+                {
+                    ratingSum = ratingSum + rating.rating;
+
+                }
+                if (ratings.Count == 0)
+                {
+                    item.Rating = ratingSum / 1;
+                }
+                else
+                    item.Rating = ratingSum / ratings.Count;
+
+            }
             return ListOfDoctor;
         }
 
@@ -55,6 +85,23 @@ namespace AA_Task.Repository
         {
             var specialtyId=_Context.specialties.Where(s=>s.Name==specialty).FirstOrDefault().Id;
             var ListOfDoctor = _Context.doctors.Where(d => d.doctorspecialtyId == specialtyId).ToList();
+            foreach (var item in ListOfDoctor)
+            {
+                List<RatingAndComments> ratings = _Context.ratingAndComments.Where(d => d.doctorId == item.Id).ToList();
+                float ratingSum = 0;
+                foreach (RatingAndComments rating in ratings)
+                {
+                    ratingSum = ratingSum + rating.rating;
+
+                }
+                if (ratings.Count == 0)
+                {
+                    item.Rating = ratingSum / 1;
+                }
+                else
+                    item.Rating = ratingSum / ratings.Count;
+
+            }
             return ListOfDoctor;
         }
 
