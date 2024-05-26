@@ -7,6 +7,8 @@ namespace AA_Task.Interface
     {
         bool AddUser(User user);
         int login(string email , string password);
+        int loginUsingNfc(string NFC);
+        Tuple<bool,string> addNFCId(string NFCId,int id);
         User GetProfileDetials(int id);
         string updatepassword(int id , string oldpassword,string newpassword);
         string updateCity(int id,  string newcity);

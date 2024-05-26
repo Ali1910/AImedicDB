@@ -22,6 +22,7 @@ builder.Services.AddTransient<iFileService, FileService>();
 builder.Services.AddScoped<IDoctorRepo, DoctorRepo>();
 builder.Services.AddScoped<IBodypartRepository, BodyPartRepo>();
 builder.Services.AddScoped<ISymptomsRepo, SymptomRepo>();
+builder.Services.AddScoped<ITimesRepo, TimesRepo>();
 builder.Services.AddScoped<IAnswerRepo, AnswerRepo>();
 builder.Services.AddScoped<IUserRepo, UserRepo>();
 builder.Services.AddScoped<IQuestionRepo, QuestionRepo>();
@@ -30,21 +31,20 @@ builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
 
 var app = builder.Build();
 
+
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
+
+
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+
 
 app.UseHttpsRedirection();
-app.UseStaticFiles(new StaticFileOptions
-{
-    FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath, "Uploads")),
-    RequestPath = "/Resources"
-}
-
-    );
+//app.UseStaticFiles(new StaticFileOptions
+//{
+//    FileProvider = new PhysicalFileProvider(Path.Combine(app.Environment.ContentRootPath, "Uploads")),
+//    RequestPath = "/Resources"
+//});
 
 app.UseAuthorization();
 

@@ -57,9 +57,10 @@ namespace AA_Task.Repository
             }
         }
 
-        public List<Doctor> GetDoctorsByName(string name)
+        public List<Doctor> GetDoctorsByName(string name,string spec)
         {
-           var ListOfDoctor=_Context.doctors.Where(d=>d.Name.Contains(name)).ToList();
+            Specialty specility = _Context.specialties.Where(s => s.Name == spec).FirstOrDefault();
+           var ListOfDoctor=_Context.doctors.Where(d=>d.Name.Contains(name)&&d.doctorspecialtyId==specility.Id).ToList();
             foreach (var item in ListOfDoctor)
             {
                 List<RatingAndComments> ratings = _Context.ratingAndComments.Where(d => d.doctorId == item.Id).ToList();

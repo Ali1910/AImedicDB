@@ -85,10 +85,23 @@ namespace AA_Task.Controllers
                 return Ok(reponse);
             }
         }
+        [HttpGet("LoginUsingNfc")]
+        public IActionResult LoginUsingNfc([FromQuery] string NFC)
+        {
+            int reponse = _repo.loginUsingNfc(NFC);
+            if (reponse == 0)
+            {
+                return BadRequest("تأكد من صحة البيانات المدخلة");
+            }
+            else
+            {
+                return Ok(reponse);
+            }
+        }
         [HttpGet("GetPofileDetailes")]
         public IActionResult profile([FromQuery] int id)
         {
-            var user = _repo.GetProfileDetials (id);
+            var user = _repo.GetProfileDetials(id);
             if (user == null)
             {
                 return Ok("Wrong Id");
@@ -149,6 +162,20 @@ namespace AA_Task.Controllers
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
+            }
+        }
+        [HttpPost("AddNFC")]
+        public IActionResult addNfcIdForUser([FromQuery] int id, string NFCid)
+        {
+            
+            var checker=_repo.addNFCId(NFCid, id);
+            if (checker.Item1)
+            {
+                return Ok(checker);
+            }
+            else
+            {
+                return BadRequest(checker);
             }
         }
 

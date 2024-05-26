@@ -15,8 +15,7 @@ namespace AA_Task.Models
         public string location { get; set; }
         public float Rating { get; set; }
         public int doctorspecialtyId { get; set; }
-
-        public string? ProfilePic { get; set; }
+        public string ProfilePic { get; set; }
         public string City { get; set; }
       
     }

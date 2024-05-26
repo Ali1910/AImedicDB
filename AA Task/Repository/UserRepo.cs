@@ -13,6 +13,37 @@ namespace AA_Task.Repository
         {
             _context = context;
         }
+
+        public Tuple<bool, string> addNFCId(string NFCId, int id)
+
+        {
+
+            User user = _context.users.Find(id)!;
+            if (user.NFCId == null)
+            {
+                User userNFC = _context.users.Where(u => u.NFCId == NFCId).FirstOrDefault();
+                if (userNFC == null)
+                {
+                    user.NFCId = NFCId;
+                    return _context.SaveChanges() > 0 ? new Tuple<bool, string>(true, "تم تسجيل الكارت الذكي الخاص بك بنجاح") : new Tuple<bool, string>(true, "فشل تسجيل الكارت الذكي الخاص بك حاول مرة أخرى");
+
+                }
+                else
+                {
+                    return new Tuple<bool, string>(true, "هذا الكارت موجود مسبقا ");
+                }
+            }
+
+            else
+            {
+                return new Tuple<bool, string>(true, "أنت تملك كارت ذكي بالفعل ");
+            }
+        }
+            
+            
+            
+        
+
         public bool AddUser(User user)
         {
             var userEixst=_context.users.Any(u=>u.Email==user.Email); 
@@ -47,6 +78,20 @@ namespace AA_Task.Repository
                 return user.Id;
             }
             
+        }
+
+        public int loginUsingNfc(string NFC)
+        {
+            User user=_context.users.Where(u=>u.NFCId==NFC).FirstOrDefault();
+            if(user == null)
+            {
+                return 0;
+
+            }
+            else
+            {
+                return user.Id;
+            }
         }
 
         public string updateCity(int id, string newcity)

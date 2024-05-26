@@ -25,39 +25,28 @@ namespace AA_Task.Controllers
             
         }
         [HttpPost]
-        public IActionResult CreateDoctor([FromQuery] DoctorDTO doctorMapper)
+        public IActionResult CreateDoctor([FromQuery] Doctor doctorMapper)
         {
-            var doctor = _mapper.Map<Doctor>(doctorMapper);
-            if (doctorMapper.Image != null) 
-            { 
-                var result=_service.SaveImage(doctorMapper.Image);
-                if(result.Item1==1)
-                {
-                    doctor.ProfilePic= result.Item2;
-                }
-               
-                var checker=_repo.AddDoctor(doctor);
+           
+        
+                var checker=_repo.AddDoctor(doctorMapper);
                 if (checker)
                 {
-                    return Ok($"{doctor.Name} is added successfully");
+                    return Ok($"{doctorMapper.Name} is added successfully");
 
                 }
                 else
                 {
-                    return BadRequest($"{doctor.Name} is Not successfully email already exists");
+                    return BadRequest($"{doctorMapper.Name} is Not successfully email already exists");
                 }
 
             }
-            else
-            {
-                return BadRequest($"image Not Added");
-
-            }
-        }
+            
+        
         [HttpGet("GetDoctorByspecialty")]
         public IActionResult GetDoctorsBySpecialty(string specialty)
         {
-            var doctors = _mapper.Map<List<DoctorDTO>>(_repo.GetDoctorsBySPeciality(specialty));
+            var doctors = _repo.GetDoctorsBySPeciality(specialty);
             if (doctors != null)
             {
                 return Ok(doctors);
@@ -68,9 +57,9 @@ namespace AA_Task.Controllers
             }
         }
         [HttpGet("GetDoctorname")]
-        public IActionResult GetDoctorsByName(string Name)
+        public IActionResult GetDoctorsByName(string Name,string spec)
         {
-            var doctors = _repo.GetDoctorsByName(Name);
+            var doctors = _repo.GetDoctorsByName(Name,spec);
             if (doctors != null)
             {
                 return Ok(doctors);

@@ -14,6 +14,7 @@ namespace AA_Task.Models
         public string BirthDate { get; set; }
         public string? SpecialCondition { get; set; }
         public string? ProfilePic { get; set; }
+        public  string?  NFCId { get; set; }
         public string City { get; set; }
         
    

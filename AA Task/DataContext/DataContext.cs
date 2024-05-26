@@ -19,6 +19,8 @@ namespace AA_Task.DataContext
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Doctor>().Property(p=>p.Rating).HasDefaultValue(0);
+            modelBuilder.Entity<User>().Property(p => p.NFCId).HasDefaultValue(null);
+            modelBuilder.Entity<BMI>().HasOne<User>().WithMany().HasForeignKey(b => b.userid);
             modelBuilder.Entity<diagnosis>().HasOne<Doctor>().WithMany().HasForeignKey(r => r.doctorId).OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<diagnosis>().HasOne<User>().WithMany().HasForeignKey(r => r.userid).OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<RatingAndComments>().HasOne<Doctor>().WithMany().HasForeignKey(r => r.doctorId).OnDelete(DeleteBehavior.NoAction);
@@ -63,5 +65,6 @@ namespace AA_Task.DataContext
         public DbSet<BodyPart> bodyParts { get; set; }
         public DbSet<RatingAndComments> ratingAndComments { get; set; }
         public DbSet<diagnosis> diagnosesSummary { get; set; }
+        public DbSet<BMI> BMI { get; set; }
     }
 }

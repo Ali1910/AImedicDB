@@ -8,8 +8,7 @@ namespace AA_Task
     {
         public Helper()
         {
-            CreateMap<Doctor, DoctorDTO>();
-            CreateMap<DoctorDTO, Doctor>();
+        
             CreateMap<Specialty, SpecialtyDTO>();
             CreateMap<SpecialtyDTO, Specialty>();
             CreateMap<User, UserDTO>();
