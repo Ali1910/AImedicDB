@@ -28,6 +28,7 @@ builder.Services.AddScoped<IUserRepo, UserRepo>();
 builder.Services.AddScoped<IQuestionRepo, QuestionRepo>();
 builder.Services.AddScoped<IHealthAdviceRepo, HealthAdviceRepo>();
 builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
+builder.Services.AddScoped<IBMI, BMIRepo>();
 
 var app = builder.Build();
 
