@@ -3,6 +3,7 @@ using AA_Task.DataContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AA_Task.Migrations
 {
     [DbContext(typeof(TaskDataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240601101434_updattte")]
+    partial class updattte
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -125,10 +127,6 @@ namespace AA_Task.Migrations
 
                     b.Property<int>("doctorId")
                         .HasColumnType("int");
-
-                    b.Property<string>("mainDiseases")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("summaryOfTheSession")
                         .IsRequired()
@@ -479,11 +477,6 @@ namespace AA_Task.Migrations
 
                     b.Property<int>("doctorid")
                         .HasColumnType("int");
-
-                    b.Property<bool>("rated")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
 
                     b.Property<int>("timeid")
                         .HasColumnType("int");

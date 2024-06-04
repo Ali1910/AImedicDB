@@ -2,6 +2,7 @@
 using BookingPage.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 
 namespace AA_Task.Controllers
 {
@@ -30,6 +31,27 @@ namespace AA_Task.Controllers
             
            List<Times> times=_repo.GetTimes();
             return Ok(times);
+        }
+        [HttpDelete]
+        public IActionResult deleteTome([FromQuery] int id) { 
+            
+            bool checker=_repo.deleteTime(id);
+            if (checker)
+            {
+                return Ok();
+            }else { return BadRequest(); }
+        }
+        [HttpGet("ById")]
+        public IActionResult getTimes([FromQuery] int id) {
+            Times time=_repo.getTimeById(id);
+            if (time != null)
+            {
+                return Ok(time);
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
     }
 }

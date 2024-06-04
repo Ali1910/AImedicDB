@@ -97,7 +97,7 @@ namespace school.Controllers
             }
             else
             {
-                return Ok(checker);
+                return BadRequest("لا يمكن الغاء هذا الميعاد الأن");
             }
             
         }
@@ -111,7 +111,7 @@ namespace school.Controllers
             }
             else
             {
-                return Ok(checker);
+                return BadRequest("لا يمكن تعديل هذا الميعاد الأن");
 
             }
             
@@ -127,7 +127,7 @@ namespace school.Controllers
             }
             else
             {
-                return Ok(checker);
+                return BadRequest("لا يمكن انهاء هذا الميعاد الان");
 
             }
 

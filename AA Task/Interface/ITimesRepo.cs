@@ -6,5 +6,8 @@ namespace AA_Task.Interface
     {
         bool addTime(string YearValue,string MonthValue , string DayValue);
         List<Times> GetTimes();
+        Times getTimeById(int id);
+        bool deleteTime(int id);
+        
     }
 }

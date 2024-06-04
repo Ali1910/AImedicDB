@@ -35,6 +35,7 @@ namespace AA_Task.DataContext
             modelBuilder.Entity<DoctorTimes>().Property(b=>b.empty).HasDefaultValue(true);
             modelBuilder.Entity<Appointments>().Property(b => b.Canceled).HasDefaultValue(false);
             modelBuilder.Entity<Appointments>().Property(b => b.Done).HasDefaultValue(false);
+            modelBuilder.Entity<Appointments>().Property(b => b.rated).HasDefaultValue(false);
             modelBuilder.Entity<User>().Property(u=>u.gender).HasMaxLength(4);
             modelBuilder.Entity<User>().Property(u => u.phoneNumber).HasMaxLength(11);
             modelBuilder.Entity<User>().Property(u => u.City).HasMaxLength(15);
@@ -47,7 +48,12 @@ namespace AA_Task.DataContext
             modelBuilder.Entity<Appointments>().HasOne<Doctor>().WithMany().HasForeignKey(b => b.doctorid);
             modelBuilder.Entity<Appointments>().HasOne<Times>().WithMany().HasForeignKey(b => b.timeid);
             modelBuilder.Entity<Doctor>().HasOne<Specialty>().WithMany().HasForeignKey(b => b.doctorspecialtyId);
-}
+            modelBuilder.Entity<BMI>().Property(u => u.year).HasMaxLength(4);
+            modelBuilder.Entity<BMI>().Property(u => u.month).HasMaxLength(2);
+            modelBuilder.Entity<BMI>().Property(u => u.day).HasMaxLength(2);
+            modelBuilder.Entity<BMI>().Property(u => u.hour).HasMaxLength(2);
+            modelBuilder.Entity<BMI>().Property(u => u.minute).HasMaxLength(2);
+        }
         public DbSet<User> users { get; set; }
         public DbSet<Specialty> specialties { get; set; }
         public DbSet<Doctor> doctors { get; set; }

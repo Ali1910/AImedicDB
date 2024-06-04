@@ -132,7 +132,9 @@ namespace school.repository
                     name = doctor.Name,
                     AppointmentTime = item.appointmentTime,
                     fee=doctor.fee,
-                    unviersity=doctor.universiry
+                    unviersity=doctor.universiry,
+                    rated=item.rated,
+                    
                 };
                 UserAppointments.Add(UserAppointment);
             }
@@ -423,7 +425,7 @@ namespace school.repository
 
         public List<AppointmenstDTO> GetUserDoneAppointments(int userId)
         {
-            List<Appointments> appointmentsForUser = _context.appointments.OrderByDescending(b => b.Id).Where(a => a.userid == userId &&  a.Done == true).ToList() ?? [];
+            List<Appointments> appointmentsForUser = _context.appointments.OrderByDescending(b => b.Id).Where(a => a.userid == userId && a.Done == true).ToList() ?? [];
             List<AppointmenstDTO> UserAppointments = [];
             foreach (var item in appointmentsForUser)
             {
@@ -444,7 +446,8 @@ namespace school.repository
                     name = doctor.Name,
                     AppointmentTime = item.appointmentTime,
                     fee = doctor.fee,
-                    unviersity = doctor.universiry
+                    unviersity = doctor.universiry,
+                    rated=item.rated
                 };
                 UserAppointments.Add(UserAppointment);
             }
@@ -456,7 +459,7 @@ namespace school.repository
 
         public List<AppointmenstDTO> GetDoctorAppointments(int DoctorId, bool state)
         {
-            List<Appointments> appointmentsForDocto = _context.appointments.OrderByDescending(b => b.Id).Where(a => a.doctorid == DoctorId && a.Done == state).ToList() ?? [];
+            List<Appointments> appointmentsForDocto = _context.appointments.OrderByDescending(b => b.Id).Where(a => a.doctorid == DoctorId && a.Done == state &&a.Canceled==false).ToList() ?? [];
             List<AppointmenstDTO> DoctorAppointments = [];
             foreach (var item in appointmentsForDocto)
             {
@@ -475,7 +478,8 @@ namespace school.repository
                     month = time.month,
                     name = user.Name,
                     AppointmentTime = item.appointmentTime,
-                   
+                    rated = item.rated
+
                 };
                 DoctorAppointments.Add(DoctorAppointment);
             }

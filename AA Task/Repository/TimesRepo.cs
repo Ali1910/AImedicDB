@@ -29,6 +29,19 @@ namespace AA_Task.Repository
             }
         }
 
+        public bool deleteTime(int id)
+        {
+            Times time = _context.times.Find(id)!;
+            _context.times.Remove(time);
+            return _context.SaveChanges()>0?true:false;
+        }
+
+        public Times getTimeById(int id)
+        {
+            Times times = _context.times.Find(id);
+            return times;
+        }
+
         public List<Times> GetTimes()
         {
             return _context.times.ToList();

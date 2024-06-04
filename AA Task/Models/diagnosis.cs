@@ -6,5 +6,6 @@
         public int userid { get; set; }
         public int doctorId { get; set; }
         public string summaryOfTheSession { get; set; }
+        public string mainDiseases { get; set; }
     }
 }

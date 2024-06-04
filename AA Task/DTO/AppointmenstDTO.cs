@@ -16,5 +16,6 @@
         public string?  spec { get; set; }
         public int? fee { get; set; }
         public string? unviersity { get; set; }
+        public bool rated { get; set; }
     }
 }

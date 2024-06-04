@@ -42,5 +42,28 @@ namespace AA_Task.Controllers
             }
            
         }
+        [HttpGet("BMI Reads For user")]
+        public IActionResult GetBMireadsForUser([FromQuery] int userId)
+        {
+            try
+            {
+                List<BMI> bmi = _repo.getBMIReadsForUser(userId);
+                return Ok(bmi);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message.ToString());
+            }
+
+        }
+        [HttpDelete]
+        public IActionResult DeleteBMiRead([FromQuery] int BMIId)
+        {
+            bool chexker=_repo.DeleteBMIRead(BMIId);
+            if (chexker)
+            {
+                return Ok();
+            }else { return BadRequest(); }
+        }
     }
 }
