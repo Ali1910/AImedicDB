@@ -30,6 +30,7 @@ builder.Services.AddScoped<IHealthAdviceRepo, HealthAdviceRepo>();
 builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
 builder.Services.AddScoped<IBMI, BMIRepo>();
 builder.Services.AddScoped<IdoctorTimes, DoctorTimesRepo>();
+builder.Services.AddScoped<IdiagnosisSummary, DiagnosisSummary>();
 
 var app = builder.Build();
 

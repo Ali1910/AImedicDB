@@ -22,7 +22,8 @@ namespace AA_Task.DataContext
             modelBuilder.Entity<User>().Property(p => p.NFCId).HasDefaultValue(null);
             modelBuilder.Entity<BMI>().HasOne<User>().WithMany().HasForeignKey(b => b.userid);
             modelBuilder.Entity<diagnosis>().HasOne<Doctor>().WithMany().HasForeignKey(r => r.doctorId).OnDelete(DeleteBehavior.NoAction);
-            modelBuilder.Entity<diagnosis>().HasOne<User>().WithMany().HasForeignKey(r => r.userid).OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<diagnosis>().HasOne<User>().WithMany().HasForeignKey(r => r.UserId).OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<diagnosis>().HasOne<Appointments>().WithMany().HasForeignKey(r => r.ApponitmentId).OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<RatingAndComments>().HasOne<Doctor>().WithMany().HasForeignKey(r => r.doctorId).OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<RatingAndComments>().HasOne<User>().WithMany().HasForeignKey(r => r.UserId).OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<RatingAndComments>().HasOne<Appointments>().WithMany().HasForeignKey(r => r.appointmentId).OnDelete(DeleteBehavior.NoAction);

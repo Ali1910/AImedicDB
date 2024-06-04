@@ -36,29 +36,16 @@ namespace school.repository
                 }
                 else if (int.Parse(time.day) == DateTime.Now.Day) // same day need to check hour
                 {
-                    string hour = "";
-                    if (appointmentime.Length == 8)
-                    {
-                        hour= appointmentime.Substring(0, 2);
-                    }
-                    else
-                    {
-                        hour = appointmentime.Substring(0 ,1);
+                  
 
-                    }
-
-                    if (int.Parse(hour) - DateTime.Now.Hour > 0) // next hour no need to check minutes
+                    if (int.Parse(appointmentime.Substring(0, 2)) - (DateTime.Now.Hour+1) > 0) // next hour no need to check minutes
                     {
                         return addingAppoinment(appointmentime, timeid, UserId, doctorId, userChecker, DoctorChecker);
                     }
-                    else if (DateTime.Now.Hour - int.Parse(hour) == 0) //same hour need to check minutes
+                    else if ((DateTime.Now.Hour+1) - int.Parse(appointmentime.Substring(0, 2)) == 0) //same hour need to check minutes
                     {
-                        string x = DateTime.Now.Minute.ToString();
-                        if (x.Length == 1)
-                        {
-                            x = $"0{x}";
-                        }
-                        if (int.Parse(appointmentime.Substring(3, 2)) <= int.Parse(x)) // passed or same minutes can't book
+                        
+                        if (int.Parse(appointmentime.Substring(3, 2)) <= DateTime.Now.Minute) // passed or same minutes can't book
                         {
                             return false;
                         }
@@ -164,29 +151,16 @@ namespace school.repository
                 {
                     foreach (var dt in getdate)
                     {
-                        string hour = "";
-                        if (dt.datetime.Length == 8)
-                        {
-                            hour = dt.datetime.Substring(0, 2);
-                        }
-                        else
-                        {
-                            hour = dt.datetime.Substring(0, 1);
-
-                        }
-                        if (int.Parse(hour) < DateTime.Now.Hour) //checking hour no need to check minutes 
+                      
+                        if (int.Parse(dt.datetime.Substring(0, 2)) < (DateTime.Now.Hour+1)) //checking hour no need to check minutes 
                         {
                             dt.empty = false;
                             
 
-                        }else if(int.Parse(hour) == DateTime.Now.Hour) // checking hour and need to check minute
+                        }else if(int.Parse(dt.datetime.Substring(0, 2)) == (DateTime.Now.Hour+1)) // checking hour and need to check minute
                         {
-                            string x = DateTime.Now.Minute.ToString();
-                            if (x.Length == 1)
-                            {
-                                x = $"0{x}";
-                            }
-                            if (int.Parse(dt.datetime.Substring(3, 2)) <= int.Parse(x)) // old or same minutes
+                            
+                            if (int.Parse(dt.datetime.Substring(3, 2)) <= DateTime.Now.Minute) // old or same minutes
                             {
                                 dt.empty = false;
                             }
@@ -228,18 +202,9 @@ namespace school.repository
                     return false;
                 }else if (int.Parse(time.day) - DateTime.Now.Day == 0)// same day needs to check hour
                 {
-                    string hour = "";
-                    if (appointmnet.appointmentTime.Length == 8)
-                    {
-                        hour = appointmnet.appointmentTime.Substring(0, 2);
-                    }
-                    else
-                    {
-                        hour = appointmnet.appointmentTime.Substring(0, 1);
-
-                    }
                     
-                    if (int.Parse(hour) - DateTime.Now.Hour <= 1)// hour diff is one or less
+                    
+                    if (int.Parse(appointmnet.appointmentTime.Substring(0, 2)) - (DateTime.Now.Hour+1) <= 1)// hour diff is one or less
                     {
                         return false;
                     }
@@ -297,29 +262,16 @@ namespace school.repository
                 }
                 else if (int.Parse(time.day) == DateTime.Now.Day) // same day need to check hour
                 {
-                    string hour = "";
-                    if (appointmentime.Length == 8)
-                    {
-                        hour = appointmentime.Substring(0, 2);
-                    }
-                    else
-                    {
-                        hour = appointmentime.Substring(0, 1);
+                   
 
-                    }
-
-                    if (int.Parse(hour) - DateTime.Now.Hour > 0) // next hour no need to check minutes
+                    if (int.Parse(appointmentime.Substring(0, 2)) - (DateTime.Now.Hour+1) > 0) // next hour no need to check minutes
                     {
                         return updateAppointment(timeid, appointmentime, oldAppointment, oldUserApp, oldDoctorApp, NewDoctorApp, newUserApp);
                     }
-                    else if (DateTime.Now.Hour - int.Parse(hour) == 0) //same hour need to check minutes
+                    else if ((DateTime.Now.Hour+1) - int.Parse(appointmentime.Substring(0, 2)) == 0) //same hour need to check minutes
                     {
-                        string x = DateTime.Now.Minute.ToString();
-                        if (x.Length == 1)
-                        {
-                            x = $"0{x}";
-                        }
-                        if (int.Parse(appointmentime.Substring(3, 2)) <= int.Parse(x)) // passed or same minutes can't book
+                      
+                        if (int.Parse(appointmentime.Substring(3, 2)) <= DateTime.Now.Minute) // passed or same minutes can't book
                         {
                             return false;
                         }
@@ -380,18 +332,9 @@ namespace school.repository
                 }
                 else if (int.Parse(time.day) - DateTime.Now.Day == 0)// same day needs to check hour for ex day 5 لازم نشوف الساعة
                 {
-                    string hour = "";
-                    if (appointmnet.appointmentTime.Length == 8)
-                    {
-                        hour = appointmnet.appointmentTime.Substring(0, 2);
-                    }
-                    else
-                    {
-                        hour = appointmnet.appointmentTime.Substring(0, 1);
+                   
 
-                    }
-
-                    if (int.Parse(hour) - DateTime.Now.Hour <= 1)// hour diff is one or more ***past appointment*** for ex 20-21
+                    if (int.Parse(appointmnet.appointmentTime.Substring(0, 2)) - (DateTime.Now.Hour+1) <= 1)// hour diff is one or more ***past appointment*** for ex 20-21
                     {
                         appointmnet.Done = true;
                         _context.userTimes.Remove(userTime);
