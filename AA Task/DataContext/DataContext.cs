@@ -24,9 +24,10 @@ namespace AA_Task.DataContext
             modelBuilder.Entity<diagnosis>().HasOne<Doctor>().WithMany().HasForeignKey(r => r.doctorId).OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<diagnosis>().HasOne<User>().WithMany().HasForeignKey(r => r.UserId).OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<diagnosis>().HasOne<Appointments>().WithMany().HasForeignKey(r => r.ApponitmentId).OnDelete(DeleteBehavior.NoAction);
-            modelBuilder.Entity<RatingAndComments>().HasOne<Doctor>().WithMany().HasForeignKey(r => r.doctorId).OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<RatingAndComments>().HasOne<Doctor>().WithMany().HasForeignKey(r => r.DoctorId).OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<RatingAndComments>().HasOne<User>().WithMany().HasForeignKey(r => r.UserId).OnDelete(DeleteBehavior.NoAction);
-            modelBuilder.Entity<RatingAndComments>().HasOne<Appointments>().WithMany().HasForeignKey(r => r.appointmentId).OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<RatingAndComments>().HasOne<Appointments>().WithMany().HasForeignKey(r => r.ApponintmetId).OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<RatingAndComments>().Property(r => r.commment).HasDefaultValue(null);
             modelBuilder.Entity<Question>().Property(p=>p.Answered).HasDefaultValue(false);
             modelBuilder.Entity<Symptom>().HasOne<BodyPart>().WithMany().HasForeignKey(b => b.boypartId);
             modelBuilder.Entity<HealthAdvice>().HasOne<Doctor>().WithMany().HasForeignKey(H => H.doctorId);

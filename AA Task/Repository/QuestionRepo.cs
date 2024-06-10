@@ -19,6 +19,22 @@ namespace AA_Task.Repository
             return _context.SaveChanges()>0?true:false;
         }
 
+        public bool deletequestion(int questionId)
+        {
+            answer answerforquestion = _context.answers.Where(a => a.question == questionId).FirstOrDefault();
+            if (answerforquestion != null) {
+                _context.answers.Remove(answerforquestion);
+               
+            }
+            else
+            {
+                Question question = _context.questions.Find(questionId);
+                _context.questions.Remove(question);
+            }
+           
+            return _context.SaveChanges()>0?true:!false;
+        }
+
         public Dictionary<string, dynamic> getAllquestions(int pagesize, int pagenum)
         {
             List<Question> listOfQuestions= _context.questions.OrderByDescending(p=>p.Id).Skip((pagenum-1)*pagesize).Take(pagesize).ToList();

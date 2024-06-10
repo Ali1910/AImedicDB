@@ -35,11 +35,11 @@ namespace AA_Task.Repository
         public Doctor GetDoctorById(int id)
         {
             Doctor doctor = _Context.doctors.Find(id)!;
-            List<RatingAndComments> ratings=_Context.ratingAndComments.Where(d => d.doctorId == id).ToList();
-            float ratingSum = 0;
+            List<RatingAndComments> ratings=_Context.ratingAndComments.Where(d => d.DoctorId == id).ToList();
+            double ratingSum = 0;
             foreach (RatingAndComments rating in ratings)
             {
-                ratingSum = ratingSum + rating.rating;
+                ratingSum = ratingSum + double.Parse(rating.Rating);
                 
             }
             if (ratings.Count == 0)
@@ -63,11 +63,11 @@ namespace AA_Task.Repository
            var ListOfDoctor=_Context.doctors.Where(d=>d.Name.Contains(name)&&d.doctorspecialtyId==specility.Id).ToList();
             foreach (var item in ListOfDoctor)
             {
-                List<RatingAndComments> ratings = _Context.ratingAndComments.Where(d => d.doctorId == item.Id).ToList();
-                float ratingSum = 0;
+                List<RatingAndComments> ratings = _Context.ratingAndComments.Where(d => d.DoctorId == item.Id).ToList();
+                double ratingSum = 0;
                 foreach (RatingAndComments rating in ratings)
                 {
-                    ratingSum = ratingSum + rating.rating;
+                    ratingSum = ratingSum + double.Parse(rating.Rating);
 
                 }
                 if (ratings.Count == 0)
@@ -88,11 +88,11 @@ namespace AA_Task.Repository
             var ListOfDoctor = _Context.doctors.Where(d => d.doctorspecialtyId == specialtyId).ToList();
             foreach (var item in ListOfDoctor)
             {
-                List<RatingAndComments> ratings = _Context.ratingAndComments.Where(d => d.doctorId == item.Id).ToList();
-                float ratingSum = 0;
+                List<RatingAndComments> ratings = _Context.ratingAndComments.Where(d => d.DoctorId == item.Id).ToList();
+                double ratingSum = 0;
                 foreach (RatingAndComments rating in ratings)
                 {
-                    ratingSum = ratingSum + rating.rating;
+                    ratingSum = ratingSum + double.Parse(rating.Rating);
 
                 }
                 if (ratings.Count == 0)

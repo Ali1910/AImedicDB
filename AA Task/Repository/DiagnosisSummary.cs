@@ -25,9 +25,10 @@ namespace AA_Task.Repository
                 mainDiseases=diagnosis.mainDiseases,
                 datetime=diagnosis.datetime,
             };
-           
-            
                 _context.diagnosesSummary.Add(diagnosis1);
+            var app = _context.appointments.Find(diagnosis1.ApponitmentId);
+            app.Done=true;
+            _context.appointments.Update(app);
                 return _context.SaveChanges() > 0 ? true : false;
           
             

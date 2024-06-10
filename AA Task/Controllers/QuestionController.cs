@@ -59,5 +59,12 @@ namespace AA_Task.Controllers
             }
 
         }
+        [HttpDelete]
+        public IActionResult Delete([FromQuery] int id) { 
+            bool checker=_questionRepo.deletequestion(id);
+            if (checker)
+            { return Ok(); }
+            else { return BadRequest(); }
+        }
     }
 }

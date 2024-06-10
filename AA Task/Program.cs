@@ -31,6 +31,7 @@ builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
 builder.Services.AddScoped<IBMI, BMIRepo>();
 builder.Services.AddScoped<IdoctorTimes, DoctorTimesRepo>();
 builder.Services.AddScoped<IdiagnosisSummary, DiagnosisSummary>();
+builder.Services.AddScoped<IratingAndCommentRepo, RatingAndCommentRepo>();
 
 var app = builder.Build();
 

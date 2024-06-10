@@ -3,6 +3,7 @@ using AA_Task.DataContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AA_Task.Migrations
 {
     [DbContext(typeof(TaskDataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240605114807_updattttte2")]
+    partial class updattttte2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -317,35 +319,34 @@ namespace AA_Task.Migrations
 
             modelBuilder.Entity("AA_Task.Models.RatingAndComments", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("ApponintmetId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("DoctorId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Rating")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.Property<string>("commment")
+                    b.Property<int>("appointmentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("comment")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.Property<int>("doctorId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("ApponintmetId");
+                    b.Property<double>("rating")
+                        .HasColumnType("float");
 
-                    b.HasIndex("DoctorId");
+                    b.HasKey("id");
 
                     b.HasIndex("UserId");
+
+                    b.HasIndex("appointmentId");
+
+                    b.HasIndex("doctorId");
 
                     b.ToTable("ratingAndComments");
                 });
@@ -691,21 +692,21 @@ namespace AA_Task.Migrations
 
             modelBuilder.Entity("AA_Task.Models.RatingAndComments", b =>
                 {
+                    b.HasOne("AA_Task.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("BookingPage.Models.Appointments", null)
                         .WithMany()
-                        .HasForeignKey("ApponintmetId")
+                        .HasForeignKey("appointmentId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("AA_Task.Models.Doctor", null)
                         .WithMany()
-                        .HasForeignKey("DoctorId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("AA_Task.Models.User", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("doctorId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });

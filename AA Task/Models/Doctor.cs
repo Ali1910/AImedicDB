@@ -13,7 +13,7 @@ namespace AA_Task.Models
         public int fee { get; set; }
         public string BirthDate { get; set; }
         public string location { get; set; }
-        public float Rating { get; set; }
+        public double Rating { get; set; }
         public int doctorspecialtyId { get; set; }
         public string ProfilePic { get; set; }
         public string City { get; set; }
