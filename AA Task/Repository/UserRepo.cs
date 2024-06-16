@@ -2,6 +2,8 @@
 using AA_Task.DTO;
 using AA_Task.Interface;
 using AA_Task.Models;
+using howtohandelimages.Repository.Abstract;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
 namespace AA_Task.Repository
@@ -9,9 +11,11 @@ namespace AA_Task.Repository
     public class UserRepo : IUserRepo
     {
         private readonly TaskDataContext _context;
-        public UserRepo(TaskDataContext context)
+        private readonly iFileService _service;
+        public UserRepo(TaskDataContext context,iFileService service)
         {
             _context = context;
+            _service = service;
         }
 
         public Tuple<bool, string> addNFCId(string NFCId, int id)
@@ -129,6 +133,19 @@ namespace AA_Task.Repository
             }
             user.phoneNumber = newPhoneNumbder;
             return _context.SaveChanges() > 0 ? "تم تعديل رقم الهاتف بنجاح" : "حدث خطأ اثناءالتعديل حاول مرة اخرى";
+        }
+
+        public bool updateUserProfilePic(IFormFile image, int userid)
+        {
+            
+                User user = _context.users.Find(userid);
+                var result = _service.SaveImage(image);
+                if (result.Item1 == 1)
+                {
+                    user.ProfilePic = result.Item2;
+                }
+                return _context.SaveChanges() > 0 ? true : false;
+            
         }
     }
 }

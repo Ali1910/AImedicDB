@@ -42,13 +42,13 @@ var app = builder.Build();
     app.UseSwagger();
     app.UseSwaggerUI();
 
-
+var webRootPath = builder.Environment.ContentRootPath;
 app.UseHttpsRedirection();
-//app.UseStaticFiles(new StaticFileOptions
-//{
-//    FileProvider = new PhysicalFileProvider(Path.Combine(app.Environment.ContentRootPath, "Uploads")),
-//    RequestPath = "/Resources"
-//});
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(Path.Combine(webRootPath, "Uploads")),
+    RequestPath = "/Resources"
+});
 
 app.UseAuthorization();
 

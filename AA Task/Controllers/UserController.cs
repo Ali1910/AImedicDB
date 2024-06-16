@@ -178,6 +178,19 @@ namespace AA_Task.Controllers
                 return BadRequest(checker);
             }
         }
+        [HttpPut("UpdateProfilePic")]
+        public IActionResult UpdateDoctorProfilePic([FromForm] int UserId, IFormFile? image)
+        {
+            bool checker = _repo.updateUserProfilePic(image, UserId);
+            if (checker)
+            {
+                return Ok("تم تحديث الصورة الشخصية بنجاح");
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
 
     }
 }

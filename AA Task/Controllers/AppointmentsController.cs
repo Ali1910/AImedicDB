@@ -10,11 +10,11 @@ namespace school.Controllers
     public class AppointmentContoller : ControllerBase
     {
         private readonly IAppointmentRepository _repo;
-        private readonly IMapper _mapper;
-        public AppointmentContoller(IAppointmentRepository repo, IMapper mapper)
+        
+        public AppointmentContoller(IAppointmentRepository repo)
         {
             _repo = repo;
-            _mapper = mapper;
+            
 
         }
         [HttpGet]

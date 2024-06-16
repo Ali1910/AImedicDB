@@ -13,5 +13,6 @@ namespace AA_Task.Interface
         string updatepassword(int id , string oldpassword,string newpassword);
         string updateCity(int id,  string newcity);
         string updatePhoneNumber(int id, string newPhoneNumbder);
+        bool updateUserProfilePic(IFormFile image, int UserId);
     }
 }

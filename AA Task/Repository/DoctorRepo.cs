@@ -2,6 +2,7 @@
 using AA_Task.Interface;
 using AA_Task.Models;
 using BookingPage.Models;
+using howtohandelimages.Repository.Abstract;
 using System.Collections.Generic;
 using System.Numerics;
 using System.Xml.Linq;
@@ -11,9 +12,11 @@ namespace AA_Task.Repository
     public class DoctorRepo : IDoctorRepo
     {
         private readonly TaskDataContext _Context;
-        public DoctorRepo(TaskDataContext context)
+        private readonly iFileService _service;
+        public DoctorRepo(TaskDataContext context,iFileService service)
         {
             _Context = context;
+            _service = service;
         }
 
         public bool AddDoctor(Doctor doctor)
@@ -124,6 +127,17 @@ namespace AA_Task.Repository
             Doctor doctor=_Context.doctors.Where(d=>d.Email==email&&d.Password==password).FirstOrDefault();
 
             return doctor is null ? 0 : doctor.Id;
+        }
+
+        public bool updateDoctorProfilePic(IFormFile image,int DoctorId)
+        {
+            Doctor doctor = _Context.doctors.Find(DoctorId);
+            var result = _service.SaveImage(image);
+            if (result.Item1 == 1)
+            {
+                doctor.ProfilePic = result.Item2;
+            }
+            return _Context.SaveChanges()>0?true:false;
         }
     }
 }

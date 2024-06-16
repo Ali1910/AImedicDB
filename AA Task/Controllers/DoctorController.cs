@@ -25,22 +25,51 @@ namespace AA_Task.Controllers
             
         }
         [HttpPost]
-        public IActionResult CreateDoctor([FromQuery] Doctor doctorMapper)
+        public IActionResult CreateDoctor([FromForm] DoctorDTO doctorMapper)
         {
-           
-        
-                var checker=_repo.AddDoctor(doctorMapper);
+
+
+
+            var doctor = _mapper.Map<Doctor>(doctorMapper);
+            if (doctorMapper.Image != null)
+            {
+                var result = _service.SaveImage(doctorMapper.Image);
+                if (result.Item1 == 1)
+                {
+                    doctor.ProfilePic = result.Item2;
+                }
+
+                var checker = _repo.AddDoctor(doctor);
                 if (checker)
                 {
-                    return Ok($"{doctorMapper.Name} is added successfully");
+                    return Ok($"{doctor.Name} is added successfully");
 
                 }
                 else
                 {
-                    return BadRequest($"{doctorMapper.Name} is Not successfully email already exists");
+                    return BadRequest($"{doctor.Name} is Not successfully");
                 }
 
             }
+            else
+            {
+                return BadRequest($"image Not Added");
+
+            }
+
+        }
+        [HttpPut]
+        public IActionResult UpdateDoctorProfilePic([FromForm] int doctorId, IFormFile? image)
+        {
+            bool checker=_repo.updateDoctorProfilePic(image,doctorId);
+            if (checker) {
+                return Ok("تم تحديث الصورة الشخصية بنجاح");
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
             
         
         [HttpGet("GetDoctorByspecialty")]
