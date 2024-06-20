@@ -18,6 +18,7 @@ namespace school
         List<AppointmenstDTO> GetDoctorAppointments(int DoctorId, bool state);
         //for delete request
         bool deleteAppointment(int AppointmentId);
+        bool deleteAppointmentForDoctor(int AppointmentId);
         bool EndAppointment(int AppointmentId);
       
 

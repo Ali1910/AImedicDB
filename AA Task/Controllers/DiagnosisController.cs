@@ -27,5 +27,40 @@ namespace AA_Task.Controllers
                 return BadRequest("فشل الأضافة");
             }
         }
+        [HttpGet("GetDiagnosisForAuser")]
+        public IActionResult GetForUser([FromQuery] int userid) {
+            try {
+                List<diagnosis> response=_repo.GetDiagnosesForUser(userid);
+                return Ok(response);
+            } catch
+            {
+                return BadRequest();
+            }
+        }
+        [HttpGet("GetDiagnosisForADoctor")]
+        public IActionResult GetForDoctor([FromQuery] int doctorid)
+        {
+            try
+            {
+                Dictionary<string,dynamic> response = _repo.GetDiagnosesForDoctor(doctorid);
+                return Ok(response);
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+        [HttpDelete]
+        public IActionResult DeleteDiagnosis([FromQuery] int diagnosisId) { 
+            bool checker=_repo.deleteDiagnosis(diagnosisId);
+            if (checker) {
+                return Ok("تم الحذف بنجاح");
+            }
+            else
+            {
+                return BadRequest();
+            }
+
+        }
     }
 }

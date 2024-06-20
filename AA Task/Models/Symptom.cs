@@ -5,6 +5,6 @@
         public int id { get; set; }
         public string symptomInArabic { get; set; }
         public string symptomInEnglish { get; set; }
-        public int boypartId { get; set; }
+       
     }
 }

@@ -1,6 +1,7 @@
 ﻿
 using AA_Task.DataContext;
 using AA_Task.DTO;
+using AA_Task.Interface;
 using AA_Task.Models;
 using BookingPage.Models;
 
@@ -429,6 +430,17 @@ namespace school.repository
 
 
             return DoctorAppointments;
+        }
+
+        public bool deleteAppointmentForDoctor(int AppointmentId)
+        {
+            Appointments appointmnet = _context.appointments.Find(AppointmentId)!;
+            DoctorTimes doctorTime = _context.doctorTimes.Where(DT => DT.DoctorId == appointmnet.doctorid && DT.TimeId == appointmnet.timeid && DT.datetime == appointmnet.appointmentTime).FirstOrDefault()!;
+            UserTimes userTime = _context.userTimes.Where(DT => DT.userKey == appointmnet.userid && DT.Timekey == appointmnet.timeid && DT.Time == appointmnet.appointmentTime).FirstOrDefault()!;
+            appointmnet.Canceled = true;
+            doctorTime.empty = true;
+            _context.userTimes.Remove(userTime);
+            return _context.SaveChanges() > 0 ? true : false;
         }
     }
 }

@@ -11,11 +11,11 @@ namespace AA_Task.Repository
         {
             _context = context;
         }
-        public bool addsymptom(string symptominEnglish, string syptomInArabic, string bodypartName)
+        public bool addsymptom(string symptominEnglish, string syptomInArabic)
         {
-            BodyPart BD=_context.bodyParts.Where(b=>b.bodypartInEnglis == bodypartName.ToLower()).FirstOrDefault()!;
             
-            Symptom symptom = _context.symptoms.Where(s=>s.symptomInEnglish== symptominEnglish.ToLower()&&s.boypartId==BD.id).FirstOrDefault();
+            
+            Symptom symptom = _context.symptoms.Where(s=>s.symptomInEnglish== symptominEnglish.ToLower()).FirstOrDefault();
             if (symptom!=null)
             {
                 return false;
@@ -25,16 +25,16 @@ namespace AA_Task.Repository
                 Symptom symptomToBeAdded=new Symptom() { 
                     symptomInArabic=syptomInArabic,
                     symptomInEnglish= symptominEnglish.ToLower(),
-                    boypartId=BD.id
+                    
                 };
                 _context.symptoms.Add(symptomToBeAdded);
                 return _context.SaveChanges()>0?true:false;
             }
         }
 
-        public List<Symptom> getSymptoms(int bodypartId)
+        public List<Symptom> getSymptoms()
         {
-            List<Symptom> listOfSymptoms=_context.symptoms.Where(s=>s.boypartId==bodypartId).ToList();
+            List<Symptom> listOfSymptoms=_context.symptoms.ToList();
             return listOfSymptoms;
 
         }

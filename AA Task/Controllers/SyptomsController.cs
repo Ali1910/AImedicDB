@@ -15,11 +15,11 @@ namespace AA_Task.Controllers
             _repo = repo;
         }
         [HttpGet]
-        public IActionResult GetSyptomsForBodyPart([FromQuery] int id )
+        public IActionResult GetSyptomst()
         {
             try
             {
-                List<Symptom> symptoms = _repo.getSymptoms(id);
+                List<Symptom> symptoms = _repo.getSymptoms();
                 return Ok(symptoms);
             }
             catch (Exception ex)
@@ -29,9 +29,9 @@ namespace AA_Task.Controllers
 
         }
         [HttpPost]
-        public IActionResult PostSyptom([FromQuery] string bodypartName,string arabicNameForSyp,string englishNameForSyp)
+        public IActionResult PostSyptom([FromQuery] string arabicNameForSyp,string englishNameForSyp)
         {
-            bool checler = _repo.addsymptom(englishNameForSyp,arabicNameForSyp,bodypartName);
+            bool checler = _repo.addsymptom(englishNameForSyp,arabicNameForSyp);
             if (checler)
             {
                 return Ok("name added");

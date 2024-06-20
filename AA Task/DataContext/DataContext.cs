@@ -29,7 +29,7 @@ namespace AA_Task.DataContext
             modelBuilder.Entity<RatingAndComments>().HasOne<Appointments>().WithMany().HasForeignKey(r => r.ApponintmetId).OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<RatingAndComments>().Property(r => r.commment).HasDefaultValue(null);
             modelBuilder.Entity<Question>().Property(p=>p.Answered).HasDefaultValue(false);
-            modelBuilder.Entity<Symptom>().HasOne<BodyPart>().WithMany().HasForeignKey(b => b.boypartId);
+           
             modelBuilder.Entity<HealthAdvice>().HasOne<Doctor>().WithMany().HasForeignKey(H => H.doctorId);
             modelBuilder.Entity<Question>().HasOne<User>().WithMany().HasForeignKey(q => q.User);
             modelBuilder.Entity<answer>().HasOne<Doctor>().WithMany().HasForeignKey(a => a.doctor);
@@ -70,7 +70,6 @@ namespace AA_Task.DataContext
         public DbSet<Appointments> appointments { get; set; }
         public DbSet<HealthAdvice> healthAdvices { get; set; }
         public DbSet<Symptom> symptoms { get; set; }
-        public DbSet<BodyPart> bodyParts { get; set; }
         public DbSet<RatingAndComments> ratingAndComments { get; set; }
         public DbSet<diagnosis> diagnosesSummary { get; set; }
         public DbSet<BMI> BMI { get; set; }

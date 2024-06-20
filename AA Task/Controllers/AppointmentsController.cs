@@ -101,6 +101,20 @@ namespace school.Controllers
             }
             
         }
+        [HttpDelete("DeleteForDoctor")]
+        public IActionResult deleteAppointmentForDoctor([FromQuery] int AppontmentId)
+        {
+            bool checker = _repo.deleteAppointmentForDoctor(AppontmentId);
+            if (checker)
+            {
+                return Ok(checker);
+            }
+            else
+            {
+                return BadRequest("لا يمكن الغاء هذا الميعاد الأن");
+            }
+
+        }
         [HttpPut]
         public IActionResult updateAppointment([FromQuery] int timeid , int AppointmentId, string appointmentime)
         {
